@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Redis শেখার সম্পূর্ণ গাইডবুক ⚡</title>
+    <title>Redis শেখার সম্পূর্ণ গাইডবুক v2 ⚡</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet" />
     <style>
       :root {
@@ -46,7 +46,6 @@
       }
       .container { max-width: 800px; margin: 0 auto; padding: 32px 18px; position: relative; z-index: 1; }
 
-      /* HEADER */
       .header { text-align: center; margin-bottom: 36px; animation: fadeDown 0.7s ease; }
       @keyframes fadeDown { from { opacity: 0; transform: translateY(-18px); } to { opacity: 1; transform: translateY(0); } }
       .bolt { font-size: 52px; display: block; margin-bottom: 10px; animation: pulse 3s ease-in-out infinite; }
@@ -64,8 +63,13 @@
         background: rgba(255,65,54,0.12); color: var(--accent-red);
         border: 1px solid rgba(255,65,54,0.25);
       }
+      .v2-badge {
+        display: inline-block; margin-top: 8px; margin-left: 8px; padding: 3px 10px; border-radius: 20px;
+        font-size: 11px; font-weight: 700;
+        background: rgba(82,201,122,0.15); color: var(--accent-green);
+        border: 1px solid rgba(82,201,122,0.3);
+      }
 
-      /* PROGRESS */
       .progress-box {
         max-width: 460px; margin: 20px auto 0;
         background: var(--bg-card); border: 1px solid var(--border);
@@ -82,22 +86,19 @@
         box-shadow: 0 0 12px rgba(255,65,54,0.35);
       }
 
-      /* PHASE */
       .phase { margin-bottom: 34px; }
       .phase-head { display: flex; align-items: center; gap: 13px; margin-bottom: 14px; }
       .phase-ico { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 21px; flex-shrink: 0; border: 2px solid; }
       .phase-lbl { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
       .phase-ttl { font-size: 18px; font-weight: 700; }
 
-      /* TIMELINE */
       .timeline { margin-left: 23px; padding-left: 28px; border-left: 2px solid; }
 
-      /* TOPIC CARD */
       .tcard { background: var(--bg-card); border: 1px solid var(--border); border-radius: 13px; padding: 14px 16px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s; position: relative; }
       .tcard:hover { background: var(--bg-card-hover); border-color: var(--border-active); transform: translateX(2px); }
       .tcard.open { border-color: var(--border-active); background: var(--bg-card-hover); }
-      .tcard::before { content: ""; position: absolute; left: -35px; top: 18px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid; background: var(--bg-deep); transition: all 0.3s; }
-      .tcard.done::before { box-shadow: 0 0 8px; }
+      .tcard::before { content: ""; position: absolute; left: -35px; top: 18px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--dot-color, #ff4136); background: var(--bg-deep); transition: all 0.3s; }
+      .tcard.done::before { background: var(--dot-color, #ff4136); box-shadow: 0 0 8px var(--dot-color, #ff4136); }
       .ttop { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
       .tleft { display: flex; align-items: center; gap: 9px; flex: 1; min-width: 0; }
       .tnum { font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 5px; flex-shrink: 0; }
@@ -111,7 +112,6 @@
       .arr { color: var(--text-muted); font-size: 15px; transition: transform 0.2s; user-select: none; }
       .tcard.open .arr { transform: rotate(180deg); }
 
-      /* MINI DETAILS */
       .tdetails { display: none; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
       .tcard.open .tdetails { display: block; animation: slideD 0.3s ease; }
       @keyframes slideD { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
@@ -122,7 +122,6 @@
       .cpbtn { position: absolute; top: 7px; right: 7px; background: rgba(255,107,99,0.1); border: 1px solid rgba(255,107,99,0.2); color: var(--accent-red); font-size: 10px; padding: 3px 9px; border-radius: 5px; cursor: pointer; font-family: "Outfit", sans-serif; transition: all 0.2s; }
       .cpbtn:hover { background: rgba(255,107,99,0.2); }
 
-      /* READER OVERLAY */
       .reader-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(8,2,3,0.88); backdrop-filter: blur(8px); animation: fadeIn 0.3s; }
       .reader-overlay.active { display: flex; justify-content: center; align-items: flex-start; padding: 20px; overflow-y: auto; }
       @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -146,10 +145,12 @@
       .r-note { background: rgba(255,208,96,0.06); border-left: 3px solid var(--accent-yellow); padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 13px; color: #ddd; }
       .r-tip { background: rgba(82,201,122,0.06); border-left: 3px solid var(--accent-green); padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 13px; color: #ddd; }
       .r-warn { background: rgba(255,65,54,0.06); border-left: 3px solid var(--accent-red); padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 13px; color: #ddd; }
+      .r-fix { background: rgba(96,184,255,0.06); border-left: 3px solid var(--accent-blue); padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 13px; color: #ddd; }
       .r-code { background: var(--bg-code); border: 1px solid var(--border); border-radius: 9px; padding: 14px 16px; font-family: "JetBrains Mono", monospace; font-size: 12.5px; color: var(--accent-red); line-height: 1.7; overflow-x: auto; white-space: pre-wrap; word-break: break-all; margin: 10px 0; position: relative; }
       .r-code .cpbtn { top: 6px; right: 6px; }
       .r-comment { color: #6a3a3e; }
       .r-output { color: #9a7070; font-style: italic; }
+      .r-deprecated { color: #6a5a3e; text-decoration: line-through; }
       .r-divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
       .reader-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
       .nav-btn { padding: 8px 18px; border-radius: 9px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-secondary); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: "Noto Sans Bengali", sans-serif; display: flex; align-items: center; gap: 6px; }
@@ -158,7 +159,6 @@
       .nav-btn.primary:hover { background: rgba(255,65,54,0.22); }
       .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-      /* FOOTER */
       .footer { text-align: center; margin-top: 44px; padding: 22px 0; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 13px; line-height: 1.9; }
 
       ::-webkit-scrollbar { width: 6px; }
@@ -186,7 +186,9 @@
         <span class="bolt">⚡</span>
         <h1>Redis শেখার সম্পূর্ণ গাইডবুক</h1>
         <p class="sub">শূন্য থেকে প্রো — সহজ বাংলায় বিস্তারিত ব্যাখ্যা সহ</p>
-        <span class="badge">📖 ২৫টি টপিক · ৮টি ফেজ · সম্পূর্ণ টিউটোরিয়াল</span>
+        <div>
+          <span class="badge">📖 ২৫টি টপিক · ৮টি ফেজ · সম্পূর্ণ টিউটোরিয়াল</span>
+        </div>
         <div class="progress-box">
           <div class="progress-row">
             <span>অগ্রগতি</span>
@@ -210,7 +212,7 @@
       const PHASES = [
         { phase: "Phase 1", title: "ভিত্তি তৈরি (Foundation)", color: "#ff4136", icon: "🧱" },
         { phase: "Phase 2", title: "Data Types — String ও Number", color: "#ff6b30", icon: "📝" },
-        { phase: "Phase 3", title: "Data Types — List, Set, Hash", color: "#ff9520", icon: "📦" },
+        { phase: "Phase 3", title: "Data Types — List, Set, Hash, Sorted Set", color: "#ff9520", icon: "📦" },
         { phase: "Phase 4", title: "Expiry ও TTL", color: "#e8b020", icon: "⏱️" },
         { phase: "Phase 5", title: "Pub/Sub ও Transactions", color: "#52c97a", icon: "📡" },
         { phase: "Phase 6", title: "Persistence ও Backup", color: "#60b8ff", icon: "💾" },
@@ -219,18 +221,18 @@
       ];
 
       const TOPICS = [
-        // PHASE 1
+        // ===== PHASE 1 =====
         {
           id: 1, phase: 0,
           name: "Redis কী এবং কেন দরকার?",
-          points: ["Redis কী — in-memory database", "Use case: Cache, Session, Queue", "Redis vs SQL/NoSQL পার্থক্য", "Redis Architecture"],
+          points: ["Redis কী — in-memory data store", "Use case: Cache, Session, Queue, Leaderboard", "Redis vs SQL/NoSQL পার্থক্য", "Redis Architecture বোঝা"],
           cmd: "redis-cli ping\n# → PONG",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">⚡ Redis কী?</div>
-  <p class="r-p">Redis হলো একটি <b>in-memory data store</b> — মানে data RAM এ রাখে, disk এ না। তাই অবিশ্বাস্য দ্রুত! সাধারণত millisecond এর কম সময়ে response দেয়।</p>
-  <p class="r-p">পুরো নাম: <b>RE</b>mote <b>DI</b>ctionary <b>S</b>erver। Salvatore Sanfilippo ২০০৯ সালে তৈরি করেছেন।</p>
-  <div class="r-note">💡 সহজ কথায়: Redis = অনেক দ্রুত key-value store। যেখানে key দিলে value পাওয়া যায় — কিন্তু হাজারগুণ দ্রুত!</div>
+  <p class="r-p">Redis হলো একটি <b>in-memory data store</b> — মানে data RAM এ রাখে, disk এ না। তাই অবিশ্বাস্য দ্রুত! সাধারণত মিলিসেকেন্ডের কম সময়ে response দেয়।</p>
+  <p class="r-p">পুরো নাম: <b>RE</b>mote <b>DI</b>ctionary <b>S</b>erver। Salvatore Sanfilippo ২০০৯ সালে তৈরি করেছেন। এখন Redis Ltd. maintain করছে।</p>
+  <div class="r-note">💡 সহজ কথায়: Redis = অত্যন্ত দ্রুত key-value store। যেখানে key দিলে value পাওয়া যায় — কিন্তু SQL এর চেয়ে হাজারগুণ দ্রুত!</div>
 </div>
 <div class="r-section">
   <div class="r-h2">🎯 Redis কোথায় ব্যবহার হয়?</div>
@@ -252,14 +254,13 @@
 
 MongoDB:
   → Disk এ data → মাঝারি গতি
-  → JSON-like documents
-  → Flexible schema
+  → JSON-like documents, flexible schema
 
 Redis:
   → RAM এ data → অত্যন্ত দ্রুত ⚡
-  → Simple data structures
-  → Primarily key-value</div>
-  <div class="r-tip">✅ Best Practice: Redis একা ব্যবহার করো না — MySQL/MongoDB এর সাথে মিলিয়ে ব্যবহার করো। Redis = fast cache/session layer, SQL = main data store।</div>
+  → Simple data structures (String, Hash, List, Set…)
+  → Primarily key-value, TTL support built-in</div>
+  <div class="r-tip">✅ Best Practice: Redis একা ব্যবহার করো না — MySQL/PostgreSQL এর সাথে মিলিয়ে ব্যবহার করো। Redis = fast cache/session layer, SQL = main persistent store।</div>
 </div>
 <div class="r-section">
   <div class="r-h2">✅ Redis চালু আছে কিনা চেক করো</div>
@@ -268,14 +269,17 @@ redis-cli
 
 <span class="r-comment"># Ping পাঠাও — PONG পেলে সব ঠিক আছে!</span>
 127.0.0.1:6379> PING
-<span class="r-output">PONG ✅</span></div>
+<span class="r-output">PONG ✅</span>
+
+<span class="r-comment"># Server info দেখো</span>
+127.0.0.1:6379> INFO server</div>
 </div>`
         },
         {
           id: 2, phase: 0,
           name: "Redis Install ও Setup",
-          points: ["Linux/Ubuntu তে install", "Windows (WSL)", "Docker দিয়ে Redis", "redis.conf পরিচিতি"],
-          cmd: "sudo apt install redis-server\nredis-server\nredis-cli ping",
+          points: ["Linux/Ubuntu তে install", "Windows (WSL/Docker)", "Docker দিয়ে Redis চালানো", "redis.conf এর গুরুত্বপূর্ণ settings"],
+          cmd: "sudo apt install redis-server\nredis-server --version\nredis-cli ping",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">🐧 Linux (Ubuntu) তে Install</div>
@@ -289,8 +293,11 @@ sudo apt install redis-server
 sudo systemctl start redis-server
 sudo systemctl enable redis-server  <span class="r-comment"># boot এ auto-start</span>
 
-<span class="r-comment"># চেক করো চলছে কিনা</span>
+<span class="r-comment"># Status চেক করো</span>
 sudo systemctl status redis-server
+
+<span class="r-comment"># Version দেখো</span>
+redis-server --version
 
 <span class="r-comment"># Test করো</span>
 redis-cli ping
@@ -298,14 +305,18 @@ redis-cli ping
 </div>
 <div class="r-section">
   <div class="r-h2">🐳 Docker দিয়ে Redis (সবচেয়ে সহজ!)</div>
-  <div class="r-code"><span class="r-comment"># Redis container চালু করো</span>
+  <div class="r-code"><span class="r-comment"># Latest Redis container চালু করো</span>
+docker run -d --name redis -p 6379:6379 redis:latest
+
+<span class="r-comment"># Alpine (ছোট) version</span>
 docker run -d --name redis -p 6379:6379 redis:alpine
 
 <span class="r-comment"># Container এর redis-cli তে ঢোকো</span>
 docker exec -it redis redis-cli
 
 <span class="r-comment"># Password সহ চালাও</span>
-docker run -d --name redis -p 6379:6379 redis:alpine redis-server --requirepass "mypassword"</div>
+docker run -d --name redis -p 6379:6379 \
+  redis:alpine redis-server --requirepass "mypassword"</div>
 </div>
 <div class="r-section">
   <div class="r-h2">⚙️ redis.conf — মূল settings</div>
@@ -317,15 +328,18 @@ bind 127.0.0.1          <span class="r-comment"># শুধু localhost থে�
 port 6379               <span class="r-comment"># default port</span>
 requirepass yourpassword <span class="r-comment"># password set করো</span>
 maxmemory 256mb         <span class="r-comment"># সর্বোচ্চ RAM ব্যবহার</span>
-maxmemory-policy allkeys-lru  <span class="r-comment"># memory full হলে কী করবে</span></div>
+maxmemory-policy allkeys-lru  <span class="r-comment"># memory full হলে কী করবে</span>
+
+<span class="r-comment"># Config পরিবর্তনের পর restart করো</span>
+sudo systemctl restart redis-server</div>
   <div class="r-tip">✅ Best Practice: Production এ সবসময় <code>requirepass</code> দিয়ে password set করো এবং <code>bind 127.0.0.1</code> রাখো।</div>
 </div>`
         },
         {
           id: 3, phase: 0,
           name: "Redis CLI পরিচিতি",
-          points: ["redis-cli তে ঢোকা", "Basic navigation", "Help command", "Multiple databases (SELECT)"],
-          cmd: "redis-cli\nredis-cli -h localhost -p 6379\nredis-cli -a password\nSELECT 1",
+          points: ["redis-cli তে ঢোকা ও navigate করা", "Help command ব্যবহার", "Multiple databases (SELECT)", "KEYS, SCAN, TYPE command"],
+          cmd: "redis-cli\nredis-cli -h localhost -p 6379 -a password\nSELECT 1\nSCAN 0 COUNT 100",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">🖥️ redis-cli দিয়ে কাজ করো</div>
@@ -336,14 +350,15 @@ redis-cli
 redis-cli -h 192.168.1.100 -p 6379
 
 <span class="r-comment"># Password সহ connect করো</span>
-redis-cli -a mypassword
+redis-cli -h localhost -p 6379 -a mypassword
 
 <span class="r-comment"># একটা command চালিয়ে বের হয়ে আসো</span>
 redis-cli GET mykey
 
 <span class="r-comment"># Help দেখো</span>
 127.0.0.1:6379> HELP
-127.0.0.1:6379> HELP SET</div>
+127.0.0.1:6379> HELP SET
+127.0.0.1:6379> HELP @string    <span class="r-comment"># string type এর সব commands</span></div>
 </div>
 <div class="r-section">
   <div class="r-h2">🗃️ Multiple Databases</div>
@@ -353,21 +368,30 @@ redis-cli GET mykey
 <span class="r-output">OK</span>
 <span class="r-output">127.0.0.1:6379[1]> </span><span class="r-comment">← [1] দেখাচ্ছে মানে db 1 এ আছি</span>
 
-<span class="r-comment"># সব keys দেখো</span>
+<span class="r-comment"># সব keys দেখো (⚠️ production এ ব্যবহার করো না!)</span>
 127.0.0.1:6379> KEYS *
 
-<span class="r-comment"># সব data মুছে ফেলো (⚠️ সাবধান!)</span>
-127.0.0.1:6379> FLUSHDB   <span class="r-comment"># current db মুছো</span>
-127.0.0.1:6379> FLUSHALL  <span class="r-comment"># সব db মুছো</span></div>
-  <div class="r-warn">⚠️ <code>FLUSHALL</code> চালালে সব data চলে যাবে! Production এ কখনো না!</div>
+<span class="r-comment"># ✅ Production এ SCAN ব্যবহার করো (non-blocking)</span>
+127.0.0.1:6379> SCAN 0 COUNT 100
+<span class="r-output">1) "128"   ← পরের cursor
+2) 1) "user:1"
+   2) "session:abc"</span>
+
+<span class="r-comment"># Key এর type জানো</span>
+TYPE user:1
+<span class="r-output">hash</span>
+
+<span class="r-comment"># Current db মুছে ফেলো (⚠️ সাবধান!)</span>
+127.0.0.1:6379> FLUSHDB</div>
+  <div class="r-warn">⚠️ <code>KEYS *</code> production এ চালালে সার্ভার block হয়ে যেতে পারে। সবসময় <code>SCAN</code> ব্যবহার করো।</div>
 </div>`
         },
-        // PHASE 2
+        // ===== PHASE 2 =====
         {
           id: 4, phase: 1,
           name: "String — SET ও GET",
-          points: ["SET, GET command", "MSET, MGET (multiple)", "SETNX, SETEX", "Key naming convention"],
-          cmd: "SET name \"Alice\"\nGET name\nMSET k1 v1 k2 v2\nSETEX token 3600 \"abc123\"",
+          points: ["SET, GET, DEL, EXISTS", "MSET, MGET (multiple keys)", "SETNX (NX option) ও SETEX (EX option)", "Key naming convention"],
+          cmd: "SET name \"Alice\"\nGET name\nMSET k1 v1 k2 v2\nSET token \"abc123\" EX 3600 NX",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">📝 String — সবচেয়ে মৌলিক data type</div>
@@ -386,12 +410,17 @@ EXISTS name
 
 <span class="r-comment"># Key মুছো</span>
 DEL name
-<span class="r-output">(integer) 1</span></div>
+<span class="r-output">(integer) 1</span>
+
+<span class="r-comment"># Value নাও এবং নতুন value সেট করো (atomic)</span>
+GETSET name "Bob"
+<span class="r-output">"Alice"</span>  <span class="r-comment">← আগের value return হয়</span></div>
 </div>
 <div class="r-section">
   <div class="r-h2">🔢 Multiple Keys একসাথে</div>
   <div class="r-code"><span class="r-comment"># একসাথে অনেক key set করো</span>
 MSET user:1:name "Alice" user:1:age "25" user:1:city "Dhaka"
+<span class="r-output">OK</span>
 
 <span class="r-comment"># একসাথে অনেক key পাও</span>
 MGET user:1:name user:1:age user:1:city
@@ -400,35 +429,43 @@ MGET user:1:name user:1:age user:1:city
 3) "Dhaka"</span></div>
 </div>
 <div class="r-section">
-  <div class="r-h2">🎯 Special SET Commands</div>
-  <div class="r-code"><span class="r-comment"># SETNX = SET if Not eXists (key না থাকলেই set হবে)</span>
-SETNX lock "1"
-<span class="r-output">(integer) 1</span>  <span class="r-comment">← সফল</span>
-SETNX lock "2"
-<span class="r-output">(integer) 0</span>  <span class="r-comment">← ব্যর্থ, আগে থেকেই আছে</span>
+  <div class="r-h2">🎯 SET Command এর Options (আধুনিক syntax)</div>
+  <div class="r-code"><span class="r-comment"># EX = expire in seconds</span>
+SET session:abc "user123" EX 3600
 
-<span class="r-comment"># SETEX = SET with EXpiry (seconds)</span>
-SETEX session:abc 3600 "user123"  <span class="r-comment">← ১ ঘন্টা পর expire হবে</span>
+<span class="r-comment"># PX = expire in milliseconds</span>
+SET cache:key "data" PX 60000
 
-<span class="r-comment"># আধুনিক way (SET with options)</span>
-SET session:abc "user123" EX 3600 NX  <span class="r-comment">← EX=expire, NX=only if not exists</span></div>
+<span class="r-comment"># NX = only set if key does NOT exist (distributed lock এ কাজে লাগে)</span>
+SET lock:resource "1" NX EX 30
+<span class="r-output">OK</span>       <span class="r-comment">← সফল, lock পেয়েছি</span>
+SET lock:resource "1" NX EX 30
+<span class="r-output">(nil)</span>     <span class="r-comment">← ব্যর্থ, আগে থেকেই locked</span>
+
+<span class="r-comment"># XX = only set if key ALREADY exists</span>
+SET user:99 "data" XX
+<span class="r-output">(nil)</span>     <span class="r-comment">← key নেই, তাই set হয়নি</span>
+
+<span class="r-comment"># GET = পুরানো value return করো এবং নতুন set করো</span>
+SET counter "100" GET
+<span class="r-output">"25"</span>      <span class="r-comment">← আগের value (Redis 6.2+)</span></div>
+  <div class="r-fix">🔧 v2 Fix: পুরানো <code>SETNX key val</code> এবং <code>SETEX key sec val</code> deprecated। এখন <code>SET key val NX</code> এবং <code>SET key val EX sec</code> ব্যবহার করো।</div>
   <div class="r-note">💡 Key naming convention: <code>object:id:field</code> — যেমন <code>user:42:name</code>, <code>product:101:price</code>। Colon দিয়ে hierarchy তৈরি করো।</div>
-  <div class="r-tip">✅ Best Practice: Key নামে namespace ব্যবহার করো — <code>myapp:user:1</code>। এতে collision এড়ানো যায়।</div>
 </div>`
         },
         {
           id: 5, phase: 1,
           name: "Number Operations",
-          points: ["INCR, DECR", "INCRBY, DECRBY", "INCRBYFLOAT", "Counter use cases"],
-          cmd: "SET counter 0\nINCR counter\nINCRBY counter 10\nDECR counter",
+          points: ["INCR, DECR — atomic counter", "INCRBY, DECRBY", "INCRBYFLOAT", "Rate limiting ও counter use cases"],
+          cmd: "SET counter 0\nINCR counter\nINCRBY counter 10\nDECRBY counter 3\nINCRBYFLOAT price 9.99",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">🔢 Atomic Counter — Race condition ছাড়া!</div>
-  <p class="r-p">Redis এ INCR/DECR <b>atomic</b> — মানে একসাথে অনেক request আসলেও count সঠিক থাকবে। SQL এ এটা নিজে implement করতে হয়!</p>
+  <p class="r-p">Redis এ INCR/DECR <b>atomic</b> — মানে একসাথে অনেক request আসলেও count সঠিক থাকবে। SQL এ UPDATE + SELECT করতে হয়, যেখানে race condition হতে পারে।</p>
   <div class="r-code"><span class="r-comment"># Counter শুরু করো</span>
 SET page_views 0
 
-<span class="r-comment"># এক করে বাড়াও</span>
+<span class="r-comment"># এক করে বাড়াও (atomic)</span>
 INCR page_views
 <span class="r-output">(integer) 1</span>
 
@@ -441,35 +478,46 @@ INCRBY page_views 100
 
 <span class="r-comment"># কমাও</span>
 DECR page_views
-DECRBY page_views 10</div>
+<span class="r-output">(integer) 101</span>
+
+DECRBY page_views 10
+<span class="r-output">(integer) 91</span>
+
+<span class="r-comment"># Floating point (price, balance)</span>
+SET balance 100.50
+INCRBYFLOAT balance 25.75
+<span class="r-output">"126.25"</span></div>
 </div>
 <div class="r-section">
   <div class="r-h2">💡 Real Use Cases</div>
   <div class="r-code"><span class="r-comment"># Rate limiting — প্রতি user প্রতি মিনিটে সর্বোচ্চ ১০০ request</span>
 INCR rate:user:42
-EXPIRE rate:user:42 60  <span class="r-comment">← ১ মিনিট পর reset</span>
+EXPIRE rate:user:42 60  <span class="r-comment">← ১ মিনিট পর reset হবে</span>
 
-<span class="r-comment"># Unique visitor count</span>
-INCR stats:visitors:2024-01-15
+<span class="r-comment"># প্রথম request এ key নেই তাই INCR ১ থেকে শুরু করে</span>
+<span class="r-comment"># পরের requests INCR করতে থাকে</span>
+<span class="r-comment"># 100 এর বেশি হলে rate limit করো</span>
 
-<span class="r-comment"># Floating point (product price, balance)</span>
-SET balance 100.50
-INCRBYFLOAT balance 25.75
-<span class="r-output">"126.25"</span></div>
-  <div class="r-tip">✅ Best Practice: Website visit count, API call count, like/dislike count — এসব সবসময় Redis INCR দিয়ে করো। SQL UPDATE এর চেয়ে হাজারগুণ দ্রুত!</div>
+<span class="r-comment"># আরও নিরাপদ way: SET with NX + EXPIRE</span>
+SET rate:user:42 0 EX 60 NX
+INCR rate:user:42
+
+<span class="r-comment"># Daily visitor count</span>
+INCR stats:visitors:2024-01-15</div>
+  <div class="r-tip">✅ Best Practice: Website visit count, API call count, like/dislike count — এসব সবসময় Redis INCR দিয়ে করো। SQL UPDATE এর চেয়ে হাজারগুণ দ্রুত এবং race condition নেই!</div>
 </div>`
         },
-        // PHASE 3
+        // ===== PHASE 3 =====
         {
           id: 6, phase: 2,
           name: "List — Queue ও Stack",
-          points: ["LPUSH, RPUSH", "LPOP, RPOP", "LRANGE, LLEN", "Queue vs Stack pattern"],
-          cmd: "RPUSH tasks \"task1\" \"task2\"\nLPOP tasks\nLRANGE tasks 0 -1",
+          points: ["LPUSH, RPUSH — যোগ করা", "LPOP, RPOP — বের করা", "LRANGE, LLEN, LINDEX", "BLPOP (Blocking pop) — Job Queue"],
+          cmd: "RPUSH tasks \"task1\" \"task2\" \"task3\"\nLPOP tasks\nLRANGE tasks 0 -1\nBLPOP tasks 30",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">📋 List — Ordered Collection</div>
-  <p class="r-p">List হলো ordered elements এর collection। Left ও Right দুই দিক থেকে add/remove করা যায়।</p>
-  <div class="r-code"><span class="r-comment"># Right এ যোগ করো (queue এর মতো)</span>
+  <p class="r-p">List হলো ordered elements এর collection। Left ও Right দুই দিক থেকে add/remove করা যায়। Linked list এর মতো কাজ করে।</p>
+  <div class="r-code"><span class="r-comment"># Right এ যোগ করো (queue তৈরি করতে)</span>
 RPUSH tasks "send-email" "resize-image" "generate-report"
 <span class="r-output">(integer) 3</span>
 
@@ -484,35 +532,53 @@ LRANGE tasks 0 -1
 
 <span class="r-comment"># Length দেখো</span>
 LLEN tasks
-<span class="r-output">(integer) 2</span></div>
+<span class="r-output">(integer) 2</span>
+
+<span class="r-comment"># নির্দিষ্ট index এর value</span>
+LINDEX tasks 0
+<span class="r-output">"resize-image"</span></div>
 </div>
 <div class="r-section">
-  <div class="r-h2">⚙️ Queue vs Stack</div>
+  <div class="r-h2">⚙️ Queue vs Stack Pattern</div>
   <div class="r-code"><span class="r-comment"># Queue (FIFO) — প্রথমে আসা প্রথমে বের হয়</span>
 RPUSH queue "first" "second" "third"
-LPOP queue  <span class="r-comment">→ "first" (সবার আগে যোগ হয়েছিল)</span>
+LPOP queue  <span class="r-output">→ "first"</span>   <span class="r-comment">(সবার আগে ঢুকেছিল)</span>
 
 <span class="r-comment"># Stack (LIFO) — শেষে আসা প্রথমে বের হয়</span>
 RPUSH stack "first" "second" "third"
-RPOP stack  <span class="r-comment">→ "third" (সবার শেষে যোগ হয়েছিল)</span>
+RPOP stack  <span class="r-output">→ "third"</span>   <span class="r-comment">(সবার শেষে ঢুকেছিল)</span>
 
-<span class="r-comment"># Blocking pop — কেউ না আসা পর্যন্ত অপেক্ষা করো</span>
-BLPOP tasks 30  <span class="r-comment">← সর্বোচ্চ ৩০ সেকেন্ড wait করবে</span></div>
-  <div class="r-tip">✅ Best Practice: Background job queue এর জন্য List ব্যবহার করো। Worker BLPOP দিয়ে অপেক্ষা করবে, job আসলে সাথে সাথে কাজ শুরু করবে!</div>
+<span class="r-comment"># একসাথে একাধিক pop (Redis 6.2+)</span>
+LPOP tasks 2
+<span class="r-output">1) "resize-image"
+2) "generate-report"</span></div>
+</div>
+<div class="r-section">
+  <div class="r-h2">⏳ Blocking Pop — Job Worker</div>
+  <div class="r-code"><span class="r-comment"># কেউ না আসা পর্যন্ত অপেক্ষা করো (30 সেকেন্ড পর্যন্ত)</span>
+BLPOP tasks 30
+<span class="r-comment"># Queue খালি থাকলে wait করবে</span>
+<span class="r-comment"># কোনো item আসলে সাথে সাথে return করবে</span>
+<span class="r-comment"># 30 সেকেন্ড পার হলে nil return করবে</span>
+
+<span class="r-comment"># একসাথে অনেক queue watch করো</span>
+BLPOP high-priority:tasks normal:tasks 30
+<span class="r-comment"># high-priority তে কিছু থাকলে সেটা আগে নেবে</span></div>
+  <div class="r-tip">✅ Best Practice: Background job queue এর জন্য RPUSH (producer) + BLPOP (worker) pattern ব্যবহার করো। Worker BLPOP দিয়ে অপেক্ষা করবে, job আসলে তাৎক্ষণিক কাজ শুরু করবে!</div>
 </div>`
         },
         {
           id: 7, phase: 2,
           name: "Set — Unique Collection",
-          points: ["SADD, SMEMBERS", "SISMEMBER, SCARD", "Set operations (Union, Intersection)", "Use case: unique visitors"],
-          cmd: "SADD tags \"redis\" \"database\" \"cache\"\nSMEMBERS tags\nSISMEMBER tags \"redis\"",
+          points: ["SADD, SMEMBERS, SISMEMBER", "SCARD, SREM, SPOP", "SUNION, SINTER, SDIFF — Set operations", "Unique visitors ও tag system"],
+          cmd: "SADD tags \"redis\" \"database\" \"cache\"\nSMEMBERS tags\nSINTER users:page1 users:page2",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">🎯 Set — Duplicate নেই!</div>
-  <p class="r-p">Set এ একই value দুইবার থাকতে পারে না। Automatically unique করে রাখে।</p>
+  <p class="r-p">Set এ একই value দুইবার থাকতে পারে না। Automatically unique করে রাখে। Order নেই।</p>
   <div class="r-code"><span class="r-comment"># Set এ যোগ করো</span>
 SADD tags "redis" "database" "cache" "redis"  <span class="r-comment">← "redis" দুইবার!</span>
-<span class="r-output">(integer) 3</span>  <span class="r-comment">← তবু ৩টাই যোগ হয়েছে (duplicate বাদ)</span>
+<span class="r-output">(integer) 3</span>  <span class="r-comment">← তবু ৩টাই (duplicate বাদ)</span>
 
 <span class="r-comment"># সব members দেখো</span>
 SMEMBERS tags
@@ -520,13 +586,21 @@ SMEMBERS tags
 2) "database"
 3) "cache"</span>
 
-<span class="r-comment"># আছে কিনা চেক করো</span>
+<span class="r-comment"># আছে কিনা চেক করো (O(1) time!)</span>
 SISMEMBER tags "redis"
 <span class="r-output">(integer) 1</span>  <span class="r-comment">← আছে</span>
 
-<span class="r-comment"># Count</span>
+<span class="r-comment"># Count দেখো</span>
 SCARD tags
-<span class="r-output">(integer) 3</span></div>
+<span class="r-output">(integer) 3</span>
+
+<span class="r-comment"># Remove করো</span>
+SREM tags "cache"
+<span class="r-output">(integer) 1</span>
+
+<span class="r-comment"># Random একটা member বের করো (ও মুছো)</span>
+SPOP tags
+<span class="r-output">"database"</span></div>
 </div>
 <div class="r-section">
   <div class="r-h2">🔢 Set Operations — অনেক শক্তিশালী!</div>
@@ -543,26 +617,35 @@ SINTER users:page1 users:page2
 
 <span class="r-comment"># Difference — page1 এ আছে কিন্তু page2 এ নেই</span>
 SDIFF users:page1 users:page2
-<span class="r-output">"alice"</span></div>
-  <div class="r-tip">✅ Best Practice: Unique visitor tracking, tag system, follower/following — এসবের জন্য Set perfect!</div>
+<span class="r-output">"alice"</span>
+
+<span class="r-comment"># Result অন্য key তে save করো</span>
+SINTERSTORE common:visitors users:page1 users:page2</div>
+  <div class="r-tip">✅ Best Practice: Unique visitor tracking, tag system, follower/following list — এসবের জন্য Set perfect! SISMEMBER দিয়ে O(1) এ membership check করো।</div>
 </div>`
         },
         {
           id: 8, phase: 2,
           name: "Hash — Object Store",
-          points: ["HSET, HGET", "HMSET, HMGET, HGETALL", "HDEL, HEXISTS", "User profile pattern"],
-          cmd: "HSET user:1 name \"Alice\" age 25 city \"Dhaka\"\nHGETALL user:1\nHGET user:1 name",
+          points: ["HSET (multiple fields একসাথে)", "HGET, HMGET, HGETALL", "HDEL, HEXISTS, HLEN, HINCRBY", "User profile pattern"],
+          cmd: "HSET user:1 name \"Alice\" age 25 city \"Dhaka\"\nHGETALL user:1\nHMGET user:1 name city",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">🗂️ Hash — Object রাখার জন্য আদর্শ!</div>
   <p class="r-p">Hash হলো field-value pairs — অনেকটা JSON object বা Python dictionary এর মতো। User profile, product info রাখার জন্য perfect।</p>
-  <div class="r-code"><span class="r-comment"># Hash এ data set করো</span>
+  <div class="r-fix">🔧 v2 Fix: <code>HMSET</code> deprecated হয়ে গেছে। এখন <code>HSET</code> একসাথে multiple fields নিতে পারে — একটা command ই যথেষ্ট!</div>
+  <div class="r-code"><span class="r-comment"># ✅ HSET দিয়েই একসাথে multiple fields set করো (Redis 4.0+)</span>
 HSET user:42 name "Alice" age "25" city "Dhaka" email "alice@test.com"
-<span class="r-output">(integer) 4</span>
+<span class="r-output">(integer) 4</span>  <span class="r-comment">← ৪টা নতুন field তৈরি হয়েছে</span>
 
 <span class="r-comment"># একটা field পাও</span>
 HGET user:42 name
 <span class="r-output">"Alice"</span>
+
+<span class="r-comment"># একসাথে নির্দিষ্ট fields পাও</span>
+HMGET user:42 name city
+<span class="r-output">1) "Alice"
+2) "Dhaka"</span>
 
 <span class="r-comment"># সব fields পাও</span>
 HGETALL user:42
@@ -571,16 +654,13 @@ HGETALL user:42
 3) "age"
 4) "25"
 5) "city"
-6) "Dhaka"</span>
-
-<span class="r-comment"># একসাথে অনেক field পাও</span>
-HMGET user:42 name city
-<span class="r-output">1) "Alice"
-2) "Dhaka"</span></div>
+6) "Dhaka"
+7) "email"
+8) "alice@test.com"</span></div>
 </div>
 <div class="r-section">
-  <div class="r-h2">✏️ Update ও Delete</div>
-  <div class="r-code"><span class="r-comment"># Field update করো</span>
+  <div class="r-h2">✏️ Update, Delete ও Numeric Operations</div>
+  <div class="r-code"><span class="r-comment"># Field update করো (শুধু সেই field বদলায়)</span>
 HSET user:42 city "Chittagong"
 
 <span class="r-comment"># Field আছে কিনা চেক করো</span>
@@ -594,128 +674,173 @@ HDEL user:42 email
 HLEN user:42
 <span class="r-output">(integer) 3</span>
 
-<span class="r-comment"># Number field increase করো</span>
-HINCRBY user:42 age 1  <span class="r-comment">← birthday! 25 → 26</span></div>
-  <div class="r-tip">✅ Best Practice: User session, product details, config settings — এসব Hash এ রাখো। পুরো object একসাথে পাওয়া যায়, দরকারমতো field update করা যায়।</div>
+<span class="r-comment"># Numeric field বাড়াও/কমাও (atomic)</span>
+HINCRBY user:42 age 1     <span class="r-comment">← birthday! 25 → 26</span>
+HINCRBYFLOAT user:42 balance 50.25
+
+<span class="r-comment"># Field না থাকলেই শুধু set করো</span>
+HSETNX user:42 role "admin"
+
+<span class="r-comment"># শুধু keys বা values পাও</span>
+HKEYS user:42
+HVALS user:42</div>
+  <div class="r-tip">✅ Best Practice: User session, product details, config settings — এসব Hash এ রাখো। HSET দিয়ে create আর update দুটোই করা যায়।</div>
 </div>`
         },
         {
           id: 9, phase: 2,
           name: "Sorted Set — Leaderboard",
-          points: ["ZADD, ZSCORE", "ZRANGE, ZREVRANGE", "ZRANK, ZREVRANK", "Leaderboard pattern"],
-          cmd: "ZADD leaderboard 1000 \"Alice\" 850 \"Bob\" 1200 \"Charlie\"\nZREVRANGE leaderboard 0 2 WITHSCORES",
+          points: ["ZADD, ZSCORE, ZINCRBY", "ZRANGE (REV, WITHSCORES — Redis 6.2+)", "ZRANK, ZREVRANK, ZCARD", "ZRANGEBYSCORE, ZRANGEBYLEX"],
+          cmd: "ZADD leaderboard 1200 \"Charlie\" 1000 \"Alice\" 850 \"Bob\"\nZRANGE leaderboard 0 -1 REV WITHSCORES\nZRANK leaderboard \"Alice\"",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">🏆 Sorted Set — Score দিয়ে sort!</div>
-  <p class="r-p">Sorted Set হলো Set এর মতো (unique) কিন্তু প্রতিটা member এর একটা <b>score</b> আছে। Score অনুযায়ী automatically sorted থাকে।</p>
+  <p class="r-p">Sorted Set হলো Set এর মতো (unique members) কিন্তু প্রতিটা member এর একটা <b>score</b> আছে। Score অনুযায়ী automatically sorted থাকে।</p>
   <div class="r-code"><span class="r-comment"># Score সহ member যোগ করো</span>
 ZADD leaderboard 1200 "Charlie"
 ZADD leaderboard 1000 "Alice"
 ZADD leaderboard 850 "Bob"
 
+<span class="r-comment"># অথবা একসাথে</span>
+ZADD leaderboard 1200 "Charlie" 1000 "Alice" 850 "Bob"
+
 <span class="r-comment"># কারো score দেখো</span>
 ZSCORE leaderboard "Alice"
 <span class="r-output">"1000"</span>
 
-<span class="r-comment"># Score অনুযায়ী ascending order এ দেখো</span>
-ZRANGE leaderboard 0 -1 WITHSCORES
-<span class="r-output">1) "Bob"    2) "850"
-3) "Alice"  4) "1000"
-5) "Charlie" 6) "1200"</span>
-
-<span class="r-comment"># Descending order (top scorers প্রথমে)</span>
-ZREVRANGE leaderboard 0 2 WITHSCORES</div>
+<span class="r-comment"># মোট সদস্য সংখ্যা</span>
+ZCARD leaderboard
+<span class="r-output">(integer) 3</span></div>
 </div>
 <div class="r-section">
-  <div class="r-h2">📊 Rank বের করো</div>
-  <div class="r-code"><span class="r-comment"># Alice কত নম্বরে? (0-indexed, ascending)</span>
-ZRANK leaderboard "Alice"
-<span class="r-output">(integer) 1</span>  <span class="r-comment">← ২য় স্থানে (0 = সবার নিচে)</span>
+  <div class="r-h2">📊 ZRANGE — Unified Command (Redis 6.2+)</div>
+  <div class="r-fix">🔧 v2 Fix: <code>ZREVRANGE</code> deprecated (Redis 6.2+)। এখন <code>ZRANGE</code> এর সাথে <code>REV</code> option ব্যবহার করো।</div>
+  <div class="r-code"><span class="r-comment"># Ascending order (lowest score first)</span>
+ZRANGE leaderboard 0 -1 WITHSCORES
+<span class="r-output">1) "Bob"      2) "850"
+3) "Alice"    4) "1000"
+5) "Charlie"  6) "1200"</span>
 
-<span class="r-comment"># Descending rank (top 1 = 0)</span>
+<span class="r-comment"># ✅ Descending order — REV option (Redis 6.2+)</span>
+ZRANGE leaderboard 0 -1 REV WITHSCORES
+<span class="r-output">1) "Charlie"  2) "1200"
+3) "Alice"    4) "1000"
+5) "Bob"      6) "850"</span>
+
+<span class="r-comment"># Top 3 দেখো</span>
+ZRANGE leaderboard 0 2 REV WITHSCORES
+
+<span class="r-comment"># Score range এ filter করো (BYSCORE)</span>
+ZRANGE leaderboard 900 1500 BYSCORE WITHSCORES
+<span class="r-output">1) "Alice"    2) "1000"
+3) "Charlie"  4) "1200"</span></div>
+</div>
+<div class="r-section">
+  <div class="r-h2">🥇 Rank বের করো</div>
+  <div class="r-code"><span class="r-comment"># Alice কত নম্বরে? (0-indexed, ascending — 0 = lowest score)</span>
+ZRANK leaderboard "Alice"
+<span class="r-output">(integer) 1</span>  <span class="r-comment">← ২য় স্থানে (Bob = 0, Alice = 1, Charlie = 2)</span>
+
+<span class="r-comment"># Descending rank (0 = highest score)</span>
 ZREVRANK leaderboard "Charlie"
 <span class="r-output">(integer) 0</span>  <span class="r-comment">← সর্বোচ্চ স্থানে!</span>
 
-<span class="r-comment"># Score update করো (আরেকটু points যোগ করো)</span>
-ZINCRBY leaderboard 500 "Alice"
-<span class="r-output">"1500"</span>
+<span class="r-comment"># Rank with score (Redis 7.2+)</span>
+ZRANK leaderboard "Alice" WITHSCORE
+<span class="r-output">1) (integer) 1
+2) "1000"</span>
 
-<span class="r-comment"># নির্দিষ্ট score range এর members</span>
-ZRANGEBYSCORE leaderboard 900 1500</div>
-  <div class="r-tip">✅ Best Practice: Game leaderboard, trending posts, priority queue — Sorted Set এর জন্য perfect use case। Real-time rank এক কমান্ডে!</div>
+<span class="r-comment"># Score বাড়াও (atomic)</span>
+ZINCRBY leaderboard 500 "Alice"
+<span class="r-output">"1500"</span></div>
+  <div class="r-tip">✅ Best Practice: Game leaderboard, trending posts, priority queue — Sorted Set এর জন্য perfect। Real-time rank পেতে ZREVRANK, top-N পেতে ZRANGE ... 0 N-1 REV।</div>
 </div>`
         },
-        // PHASE 4
+        // ===== PHASE 4 =====
         {
           id: 10, phase: 3,
           name: "TTL ও Key Expiry",
-          points: ["EXPIRE, EXPIREAT", "TTL, PTTL", "PERSIST (TTL মুছো)", "Auto-expiry use cases"],
-          cmd: "EXPIRE session:abc 3600\nTTL session:abc\nPERSIST session:abc",
+          points: ["EXPIRE, PEXPIRE (milliseconds)", "EXPIREAT, PEXPIREAT", "TTL, PTTL — বাকি সময় দেখা", "PERSIST — TTL মুছে ফেলা"],
+          cmd: "SET otp:user42 \"123456\" EX 300\nTTL otp:user42\nEXPIRE session:abc 3600\nPERSIST mykey",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">⏱️ Key Expire করা — Automatic Cleanup!</div>
   <p class="r-p">Redis এ key কে <b>expiry time</b> দেওয়া যায় — নির্দিষ্ট সময় পর automatically মুছে যাবে। Cache, session, OTP এর জন্য অপরিহার্য!</p>
-  <div class="r-code"><span class="r-comment"># ৩৬০০ সেকেন্ড (১ ঘন্টা) পর expire হবে</span>
-SET otp:user42 "123456"
-EXPIRE otp:user42 300  <span class="r-comment">← ৫ মিনিট</span>
+  <div class="r-code"><span class="r-comment"># SET এর সাথেই expire দাও (recommended ✅)</span>
+SET otp:user42 "123456" EX 300   <span class="r-comment">← ৫ মিনিট</span>
+SET cache:data "..." PX 60000    <span class="r-comment">← ৬০ সেকেন্ড (milliseconds)</span>
+
+<span class="r-comment"># বা পরে expire set করো</span>
+SET session:abc "user123"
+EXPIRE session:abc 3600          <span class="r-comment">← ১ ঘন্টা (seconds)</span>
+PEXPIRE session:abc 3600000      <span class="r-comment">← ১ ঘন্টা (milliseconds)</span>
+
+<span class="r-comment"># Unix timestamp এ expire set করো</span>
+EXPIREAT session:abc 1735689600  <span class="r-comment">← নির্দিষ্ট date/time</span>
 
 <span class="r-comment"># কতক্ষণ বাকি আছে দেখো (seconds)</span>
 TTL otp:user42
-<span class="r-output">(integer) 298</span>
+<span class="r-output">(integer) 298</span>  <span class="r-comment">← ২৯৮ সেকেন্ড বাকি</span>
 
 <span class="r-comment"># Millisecond এ দেখো</span>
 PTTL otp:user42
 <span class="r-output">(integer) 297843</span>
 
-<span class="r-comment"># Key যদি expire না হয়</span>
-TTL permanent:key
-<span class="r-output">(integer) -1</span>  <span class="r-comment">← -1 মানে কোনো expiry নেই</span>
-
-<span class="r-comment"># Key exist না করলে</span>
-TTL nonexistent:key
-<span class="r-output">(integer) -2</span>  <span class="r-comment">← -2 মানে key নেই</span></div>
+<span class="r-comment"># TTL মানে বোঝো:</span>
+<span class="r-comment"># (integer) 298  → এতটুকু সময় বাকি আছে</span>
+<span class="r-comment"># (integer) -1   → permanent key (কোনো expiry নেই)</span>
+<span class="r-comment"># (integer) -2   → key exist করে না</span></div>
 </div>
 <div class="r-section">
-  <div class="r-h2">🔧 Expiry Control</div>
-  <div class="r-code"><span class="r-comment"># SET করার সময়ই expire দাও</span>
-SET cache:result "..." EX 3600      <span class="r-comment">← seconds</span>
-SET cache:result "..." PX 3600000   <span class="r-comment">← milliseconds</span>
+  <div class="r-h2">🔧 EXPIRE এর নতুন Options (Redis 7.0+)</div>
+  <div class="r-code"><span class="r-comment"># NX — শুধু তখনই set করো যদি expiry না থাকে</span>
+EXPIRE mykey 300 NX
 
-<span class="r-comment"># নির্দিষ্ট Unix timestamp এ expire</span>
-EXPIREAT session:abc 1735689600
+<span class="r-comment"># XX — শুধু তখনই set করো যদি expiry আগে থেকে থাকে</span>
+EXPIRE mykey 600 XX
 
-<span class="r-comment"># Expiry মুছে দাও (permanent করো)</span>
+<span class="r-comment"># GT — নতুন expiry বেশি হলেই set করো</span>
+EXPIRE mykey 1000 GT
+
+<span class="r-comment"># LT — নতুন expiry কম হলেই set করো</span>
+EXPIRE mykey 100 LT
+
+<span class="r-comment"># Expiry সরিয়ে permanent করো</span>
 PERSIST session:abc
 <span class="r-output">OK</span></div>
-  <div class="r-tip">✅ Best Practice: Cache key তে সবসময় TTL দাও — নাহলে memory ভরে যাবে। OTP → ৫ মিনিট, Session → ১-২৪ ঘন্টা, Cache → ১৫ মিনিট থেকে ১ ঘন্টা।</div>
+  <div class="r-tip">✅ Best Practice: OTP → ৫ মিনিট, Session → ২৪ ঘন্টা, Cache → ১৫ মিনিট থেকে ১ ঘন্টা। সবসময় SET এর সাথেই EX দাও — আলাদা EXPIRE call একটু risky।</div>
 </div>`
         },
         {
           id: 11, phase: 3,
           name: "Caching Pattern",
-          points: ["Cache-aside pattern", "Cache hit vs miss", "Cache invalidation", "Cache stampede এড়ানো"],
-          cmd: "# Check cache first, then DB\nGET cache:user:42\n# If nil, fetch from DB and SET with EX",
+          points: ["Cache-Aside Pattern (সবচেয়ে popular)", "Cache hit vs miss", "Cache invalidation strategies", "Cache stampede থেকে বাঁচো"],
+          cmd: "# 1. GET cache:user:42\n# 2. If nil → DB query → SET cache:user:42 ... EX 3600\n# 3. Return data",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">🚀 Cache-Aside Pattern</div>
-  <p class="r-p">সবচেয়ে popular caching pattern। আগে cache চেক করো, না থাকলে DB থেকে নাও এবং cache এ রাখো।</p>
-  <div class="r-code"><span class="r-comment"># Pseudocode (Node.js style)</span>
+  <p class="r-p">সবচেয়ে popular caching pattern। আগে cache চেক করো, না থাকলে DB থেকে নাও এবং cache এ রাখো। Application নিজেই cache manage করে।</p>
+  <div class="r-code"><span class="r-comment"># Node.js উদাহরণ (ioredis)</span>
 async function getUser(userId) {
   const cacheKey = "user:" + userId;
 
   <span class="r-comment"># Step 1: Cache চেক করো</span>
-  const cached = await redis.GET(cacheKey);
+  const cached = await redis.get(cacheKey);
 
-  if (cached) {
-    <span class="r-comment"># Cache HIT — দ্রুত return</span>
+  if (cached !== null) {
+    <span class="r-comment"># ✅ Cache HIT — দ্রুত return</span>
     return JSON.parse(cached);
   }
 
   <span class="r-comment"># Cache MISS — DB থেকে নাও</span>
-  const user = await db.query("SELECT * FROM users WHERE id = ?", userId);
+  const user = await db.query(
+    "SELECT * FROM users WHERE id = ?", [userId]
+  );
 
-  <span class="r-comment"># Cache এ রাখো (১ ঘন্টার জন্য)</span>
-  await redis.SET(cacheKey, JSON.stringify(user), "EX", 3600);
+  if (user) {
+    <span class="r-comment"># Cache এ রাখো (১ ঘন্টার জন্য)</span>
+    await redis.set(cacheKey, JSON.stringify(user), "EX", 3600);
+  }
 
   return user;
 }</div>
@@ -723,28 +848,57 @@ async function getUser(userId) {
 <div class="r-section">
   <div class="r-h2">🔄 Cache Invalidation</div>
   <p class="r-p">Data update হলে cache মুছে দাও — নাহলে পুরানো data দেখাবে!</p>
-  <div class="r-code"><span class="r-comment"># User update হলে cache মুছো</span>
+  <div class="r-code"><span class="r-comment"># Write-Through: update করার সাথে সাথে cache ও update করো</span>
 async function updateUser(userId, data) {
   await db.update("users", data, userId);
-  await redis.DEL("user:" + userId);  <span class="r-comment">← cache clear!</span>
+  const cacheKey = "user:" + userId;
+  <span class="r-comment"># Cache মুছে দাও</span>
+  await redis.del(cacheKey);
+  <span class="r-comment"># অথবা নতুন data দিয়ে cache update করো</span>
+  await redis.set(cacheKey, JSON.stringify({...data}), "EX", 3600);
 }
 
-<span class="r-comment"># অথবা TTL এর উপর ভরসা করো</span>
-<span class="r-comment"># কিছুক্ষণ পুরানো data দেখালে সমস্যা নেই?</span>
-<span class="r-comment"># তাহলে শুধু TTL দাও, manual invalidation দরকার নেই</span></div>
-  <div class="r-warn">⚠️ Cache Stampede: একসাথে অনেক request cache miss করলে সবাই DB তে যাবে — DB crash হতে পারে! সমাধান: SETNX দিয়ে একটাই DB query চালাও, বাকিরা wait করুক।</div>
+<span class="r-comment"># একসাথে অনেক key মুছো</span>
+await redis.del("user:1", "user:2", "user:3");</div>
+</div>
+<div class="r-section">
+  <div class="r-h2">⚠️ Cache Stampede থেকে বাঁচো</div>
+  <div class="r-code"><span class="r-comment"># সমস্যা: একসাথে ১০০০ request, cache miss</span>
+<span class="r-comment"># → ১০০০ জনই DB তে যাবে → DB crash!</span>
+
+<span class="r-comment"># সমাধান: Mutex Lock দিয়ে শুধু একজনই DB query করুক</span>
+async function getWithLock(key, fetchFn, ttl) {
+  const cached = await redis.get(key);
+  if (cached) return JSON.parse(cached);
+
+  const lockKey = "lock:" + key;
+  const locked = await redis.set(lockKey, "1", "EX", 10, "NX");
+
+  if (locked) {
+    <span class="r-comment"># আমিই DB থেকে আনবো</span>
+    const data = await fetchFn();
+    await redis.set(key, JSON.stringify(data), "EX", ttl);
+    await redis.del(lockKey);
+    return data;
+  } else {
+    <span class="r-comment"># অন্যজন আনছে, একটু wait করো</span>
+    await sleep(100);
+    return getWithLock(key, fetchFn, ttl);
+  }
+}</div>
+  <div class="r-warn">⚠️ Cache Stampede real problem! High traffic site এ cache miss হলে DB এ flood হয়। Mutex lock বা probabilistic early expiration ব্যবহার করো।</div>
 </div>`
         },
-        // PHASE 5
+        // ===== PHASE 5 =====
         {
           id: 12, phase: 4,
           name: "Pub/Sub — Real-time Messaging",
-          points: ["SUBSCRIBE, PUBLISH", "UNSUBSCRIBE", "Pattern subscribe (PSUBSCRIBE)", "Real-time use cases"],
-          cmd: "SUBSCRIBE notifications\nPUBLISH notifications \"Hello!\"\nPSUBSCRIBE news:*",
+          points: ["SUBSCRIBE, PUBLISH, UNSUBSCRIBE", "PSUBSCRIBE (Pattern subscribe)", "Real-time chat ও notification", "Pub/Sub এর limitations"],
+          cmd: "SUBSCRIBE notifications\nPUBLISH notifications \"Hello!\"\nPSUBSCRIBE news:*\nSUBSCRIBE ch1 ch2 ch3",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">📡 Pub/Sub — Real-time Communication!</div>
-  <p class="r-p">Pub/Sub মানে Publisher/Subscriber — এক জন message পাঠায় (publish), আরেক জন receive করে (subscribe)। Live chat, notification, real-time update এর জন্য দারুণ!</p>
+  <p class="r-p">Pub/Sub মানে Publisher/Subscriber pattern — এক জন message পাঠায় (publish), অন্যরা receive করে (subscribe)। Live chat, notification, real-time update এর জন্য দারুণ!</p>
   <div class="r-code"><span class="r-comment"># Terminal 1: Subscribe করো</span>
 SUBSCRIBE notifications
 <span class="r-output">Reading messages... (press Ctrl-C to quit)
@@ -759,52 +913,62 @@ PUBLISH notifications "নতুন order এসেছে!"
 <span class="r-comment"># Terminal 1 এ দেখাবে:</span>
 <span class="r-output">1) "message"
 2) "notifications"
-3) "নতুন order এসেছে!"</span></div>
+3) "নতুন order এসেছে!" ✅</span>
+
+<span class="r-comment"># একসাথে অনেক channel subscribe করো</span>
+SUBSCRIBE orders payments notifications</div>
 </div>
 <div class="r-section">
-  <div class="r-h2">🔍 Pattern Subscribe</div>
-  <div class="r-code"><span class="r-comment"># news: দিয়ে শুরু যেকোনো channel subscribe করো</span>
+  <div class="r-h2">🔍 Pattern Subscribe (PSUBSCRIBE)</div>
+  <div class="r-code"><span class="r-comment"># "news:" দিয়ে শুরু যেকোনো channel subscribe করো</span>
 PSUBSCRIBE news:*
 
 <span class="r-comment"># এখন এই সব channel এর message পাবে:</span>
 PUBLISH news:sports "Bangladesh won!"
-PUBLISH news:tech "New AI model released!"
-PUBLISH news:weather "Rain today"</div>
-  <div class="r-tip">✅ Best Practice: Pub/Sub message deliver না হলে হারিয়ে যায়! যদি reliable messaging দরকার হয়, Redis Streams বা BullMQ (Redis based job queue) ব্যবহার করো।</div>
+PUBLISH news:tech "New AI released!"
+PUBLISH news:weather "Rain today"
+
+<span class="r-comment"># Subscribe কোথায় কোথায় আছে দেখো</span>
+PUBSUB CHANNELS      <span class="r-comment">← active channels</span>
+PUBSUB NUMSUB news:tech  <span class="r-comment">← কতজন subscribe করেছে</span>
+PUBSUB NUMPAT        <span class="r-comment">← pattern subscriptions count</span></div>
+  <div class="r-warn">⚠️ Pub/Sub এর limitation: Subscriber offline থাকলে message হারিয়ে যায়! Reliable messaging দরকার হলে Redis Streams বা BullMQ ব্যবহার করো।</div>
+  <div class="r-tip">✅ Best Practice: Simple real-time notification এর জন্য Pub/Sub। Persistent, reliable messaging এর জন্য Redis Streams।</div>
 </div>`
         },
         {
           id: 13, phase: 4,
           name: "Transactions — MULTI/EXEC",
-          points: ["MULTI, EXEC, DISCARD", "WATCH (Optimistic locking)", "Atomic execution", "Error handling"],
-          cmd: "MULTI\nINCR balance:alice\nDECR balance:bob\nEXEC",
+          points: ["MULTI, EXEC, DISCARD", "WATCH — Optimistic Locking", "Atomic execution guarantee", "Lua script vs Transaction"],
+          cmd: "MULTI\nDECRBY balance:alice 100\nINCRBY balance:bob 100\nEXEC",
           tutorial: `
 <div class="r-section">
-  <div class="r-h2">🔒 Transaction — সব এক সাথে বা কিছুই না!</div>
-  <p class="r-p">Transaction মানে কয়েকটা command একসাথে চালানো — হয় সব execute হবে, নাহলে কোনোটাই হবে না। Bank transfer এর মতো!</p>
+  <div class="r-h2">🔒 Transaction — সব একসাথে বা কিছুই না!</div>
+  <p class="r-p">Transaction মানে কয়েকটা command একসাথে queue করে execute করা। Commands queue এর মধ্যে থাকা অবস্থায় অন্য client মাঝে ঢুকতে পারবে না।</p>
   <div class="r-code"><span class="r-comment"># Transaction শুরু করো</span>
 MULTI
 <span class="r-output">OK</span>
 
-<span class="r-comment"># Commands queue তে জমা হয়</span>
+<span class="r-comment"># Commands queue তে জমা হয় (এখনো execute হয়নি)</span>
 DECRBY balance:alice 100
 <span class="r-output">QUEUED</span>
+
 INCRBY balance:bob 100
 <span class="r-output">QUEUED</span>
 
-<span class="r-comment"># Execute করো (সব একসাথে)</span>
+<span class="r-comment"># সব একসাথে execute করো</span>
 EXEC
-<span class="r-output">1) (integer) 900   ← alice এর balance
-2) (integer) 1100  ← bob এর balance</span>
+<span class="r-output">1) (integer) 900   ← alice এর নতুন balance
+2) (integer) 1100  ← bob এর নতুন balance</span>
 
 <span class="r-comment"># Transaction বাতিল করো</span>
 MULTI
 INCR something
-DISCARD  <span class="r-comment">← সব বাতিল</span></div>
+DISCARD  <span class="r-comment">← সব queue বাতিল, কিছুই execute হবে না</span></div>
 </div>
 <div class="r-section">
   <div class="r-h2">👁️ WATCH — Optimistic Locking</div>
-  <div class="r-code"><span class="r-comment"># কোনো key দেখো রাখো — পরিবর্তন হলে transaction fail হবে</span>
+  <div class="r-code"><span class="r-comment"># Key টা watch করো — পরিবর্তন হলে EXEC fail হবে</span>
 WATCH balance:alice
 
 <span class="r-comment"># Current balance পড়ো</span>
@@ -813,255 +977,371 @@ GET balance:alice
 
 MULTI
 DECRBY balance:alice 100
+INCRBY balance:bob 100
 EXEC
-<span class="r-comment"># যদি এর মধ্যে অন্য কেউ balance পরিবর্তন করে → EXEC nil return করবে</span></div>
-  <div class="r-note">💡 Redis transaction SQL transaction এর মতো rollback করে না। Command queue হয়, execute এর সময় error হলে বাকিগুলো চলতে থাকে। পুরোপুরি atomic behavior চাইলে Lua script ব্যবহার করো।</div>
+<span class="r-comment"># ✅ যদি WATCH এর পর কেউ balance:alice পরিবর্তন না করে → সফল</span>
+<span class="r-comment"># ❌ যদি অন্য client পরিবর্তন করে → EXEC nil return করবে</span>
+
+<span class="r-comment"># Watch বাতিল করো</span>
+UNWATCH</div>
+  <div class="r-note">💡 গুরুত্বপূর্ণ: Redis transaction SQL transaction এর মতো rollback করে না। Command syntax error ছাড়া runtime error হলে বাকি commands চলতেই থাকে। পুরোপুরি atomic behavior চাইলে Lua script ব্যবহার করো।</div>
+  <div class="r-tip">✅ Best Practice: Simple atomic operations এর জন্য MULTI/EXEC, complex conditional logic এর জন্য Lua script বেশি উপযুক্ত।</div>
 </div>`
         },
-        // PHASE 6
+        // ===== PHASE 6 =====
         {
           id: 14, phase: 5,
           name: "RDB Persistence (Snapshot)",
-          points: ["RDB কী", "SAVE, BGSAVE", "snapshot config", "RDB ফাইল restore"],
-          cmd: "BGSAVE\nLASTSAVE\nCONFIG SET save \"3600 1 300 100\"",
+          points: ["RDB কী ও কীভাবে কাজ করে", "BGSAVE (non-blocking)", "Auto-save config", "dump.rdb থেকে restore"],
+          cmd: "BGSAVE\nLASTSAVE\nCONFIG GET save\nCONFIG SET save \"3600 1 300 100\"",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">📸 RDB — Point-in-time Snapshot</div>
-  <p class="r-p">RDB (Redis Database) মানে নির্দিষ্ট সময়ে Redis এর পুরো data একটা ফাইলে (dump.rdb) save করা। Server restart হলে এই ফাইল থেকে data ফিরে আসে।</p>
-  <div class="r-code"><span class="r-comment"># Background এ save করো (recommended)</span>
+  <p class="r-p">RDB (Redis Database) মানে নির্দিষ্ট সময়ে Redis এর পুরো data একটা ফাইলে (<code>dump.rdb</code>) save করা। Server restart হলে এই ফাইল থেকে data ফিরে আসে।</p>
+  <div class="r-code"><span class="r-comment"># Foreground save (⚠️ server block হয় — production এ ব্যবহার করো না)</span>
+SAVE
+
+<span class="r-comment"># ✅ Background save (non-blocking, production safe)</span>
 BGSAVE
 <span class="r-output">Background saving started</span>
 
-<span class="r-comment"># কখন শেষবার save হয়েছে</span>
+<span class="r-comment"># কখন শেষবার save হয়েছে (Unix timestamp)</span>
 LASTSAVE
-<span class="r-output">(integer) 1705000000</span>  <span class="r-comment">← Unix timestamp</span>
+<span class="r-output">(integer) 1705000123</span>
 
-<span class="r-comment"># Config: কতক্ষণে auto-save হবে</span>
-<span class="r-comment"># "৩৬০০ সেকেন্ডে কমপক্ষে ১টা পরিবর্তন হলে save"</span>
-CONFIG SET save "3600 1 300 100 60 10000"</div>
+<span class="r-comment"># Current save config দেখো</span>
+CONFIG GET save
+<span class="r-output">1) "save"
+2) "3600 1 300 100 60 10000"</span>
+<span class="r-comment"># মানে: ৩৬০০s এ ১টা change, বা ৩০০s এ ১০০টা change, বা ৬০s এ ১০০০০টা change</span></div>
 </div>
 <div class="r-section">
-  <div class="r-h2">📂 RDB ফাইল location ও restore</div>
-  <div class="r-code"><span class="r-comment"># ফাইল কোথায় save হচ্ছে দেখো</span>
-CONFIG GET dir
-CONFIG GET dbfilename
+  <div class="r-h2">⚙️ Auto-save Config</div>
+  <div class="r-code"><span class="r-comment"># redis.conf এ config:</span>
+save 3600 1       <span class="r-comment"># ৩৬০০s এ কমপক্ষে ১টা পরিবর্তন</span>
+save 300 100      <span class="r-comment"># ৩০০s এ কমপক্ষে ১০০টা পরিবর্তন</span>
+save 60 10000     <span class="r-comment"># ৬০s এ কমপক্ষে ১০০০০টা পরিবর্তন</span>
+dbfilename dump.rdb
+dir /var/lib/redis/
 
-<span class="r-comment"># Restore করতে:</span>
-<span class="r-comment"># ১. Redis বন্ধ করো</span>
+<span class="r-comment"># Runtime এ change করো</span>
+CONFIG SET save "900 1 300 10"
+CONFIG REWRITE  <span class="r-comment">← config file এ save করো</span></div>
+</div>
+<div class="r-section">
+  <div class="r-h2">🔄 RDB Restore করা</div>
+  <div class="r-code"><span class="r-comment"># Restore steps:</span>
+<span class="r-comment"># ১. Redis service বন্ধ করো</span>
+sudo systemctl stop redis-server
+
 <span class="r-comment"># ২. dump.rdb ফাইলটা redis dir এ রাখো</span>
-<span class="r-comment"># ৩. Redis চালু করো — data ফিরে আসবে!</span></div>
-  <div class="r-warn">⚠️ RDB এর সমস্যা: শেষ snapshot এর পরে যা হয়েছে তা হারাবে। ব্যাংক বা critical data এর জন্য AOF ব্যবহার করো।</div>
+cp /backup/dump-20240115.rdb /var/lib/redis/dump.rdb
+chown redis:redis /var/lib/redis/dump.rdb
+
+<span class="r-comment"># ৩. Redis চালু করো — data automatically ফিরে আসবে!</span>
+sudo systemctl start redis-server</div>
+  <div class="r-warn">⚠️ RDB এর সমস্যা: শেষ snapshot এর পরে যে data এসেছে তা হারিয়ে যাবে। Critical data এর জন্য AOF ব্যবহার করো।</div>
 </div>`
         },
         {
           id: 15, phase: 5,
           name: "AOF Persistence (Append-Only File)",
-          points: ["AOF কী", "appendonly config", "AOF rewrite", "RDB vs AOF comparison"],
-          cmd: "CONFIG SET appendonly yes\nCONFIG SET appendfsync everysec",
+          points: ["AOF কী ও কীভাবে কাজ করে", "appendfsync options (always/everysec/no)", "AOF rewrite (BGREWRITEAOF)", "RDB + AOF একসাথে ব্যবহার"],
+          cmd: "CONFIG SET appendonly yes\nCONFIG SET appendfsync everysec\nBGREWRITEAOF",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">📝 AOF — প্রতিটা command log করো</div>
-  <p class="r-p">AOF (Append Only File) মানে প্রতিটা write command একটা log ফাইলে লিখে রাখা। Server crash হলেও এই log replay করে data ফিরে আসে।</p>
+  <p class="r-p">AOF (Append Only File) মানে প্রতিটা write command একটা log ফাইলে (<code>appendonly.aof</code>) লিখে রাখা। Server crash হলেও এই log replay করে data ফিরে আসে।</p>
   <div class="r-code"><span class="r-comment"># AOF চালু করো</span>
 CONFIG SET appendonly yes
 
-<span class="r-comment"># কতক্ষণ পর পর disk এ লেখা হবে</span>
-CONFIG SET appendfsync always    <span class="r-comment"># প্রতি command (ধীর, সবচেয়ে safe)</span>
-CONFIG SET appendfsync everysec  <span class="r-comment"># প্রতি সেকেন্ড (recommended ✅)</span>
-CONFIG SET appendfsync no        <span class="r-comment"># OS decide করবে (দ্রুত, কম safe)</span></div>
+<span class="r-comment"># কতক্ষণ পর পর disk এ flush করবে</span>
+CONFIG SET appendfsync always    <span class="r-comment"># প্রতি command (সবচেয়ে safe, সবচেয়ে ধীর)</span>
+CONFIG SET appendfsync everysec  <span class="r-comment"># প্রতি সেকেন্ড ✅ (recommended — best tradeoff)</span>
+CONFIG SET appendfsync no        <span class="r-comment"># OS decide করবে (দ্রুত, কম safe)</span>
+
+<span class="r-comment"># AOF file manually rewrite করো (compaction)</span>
+BGREWRITEAOF
+<span class="r-output">Background append only file rewriting started</span></div>
+  <div class="r-note">💡 AOF rewrite মানে log file compact করা — পুরানো redundant commands সরিয়ে minimum commands দিয়ে same state represent করা।</div>
 </div>
 <div class="r-section">
-  <div class="r-h2">⚔️ RDB vs AOF</div>
+  <div class="r-h2">⚔️ RDB vs AOF vs দুটোই</div>
   <div class="r-code">RDB (Snapshot):
   ✅ ছোট ফাইল, দ্রুত restart
   ✅ Point-in-time backup ভালো
-  ❌ শেষ snapshot এর পর data হারাতে পারে
+  ❌ শেষ snapshot এর পর data হারাতে পারে (minutes)
 
 AOF (Log):
-  ✅ Data loss প্রায় শূন্য
-  ✅ Human-readable log
+  ✅ Data loss প্রায় শূন্য (সর্বোচ্চ ১ সেকেন্ড)
+  ✅ Human-readable, audit log হিসেবে কাজ করে
   ❌ বড় ফাইল, ধীর restart
 
-Best of both:
-  ✅ RDB + AOF দুটোই enable করো!</div>
+✅ Best: RDB + AOF দুটোই enable করো!</div>
   <div class="r-code"><span class="r-comment"># redis.conf তে দুটোই চালু রাখো</span>
 save 3600 1
+save 300 100
 appendonly yes
-appendfsync everysec</div>
-  <div class="r-tip">✅ Best Practice: Production এ RDB + AOF দুটোই রাখো। RDB দিয়ে quick backup, AOF দিয়ে minimal data loss।</div>
+appendfsync everysec
+auto-aof-rewrite-percentage 100
+auto-aof-rewrite-min-size 64mb</div>
+  <div class="r-tip">✅ Best Practice: Production এ RDB + AOF দুটোই রাখো। Redis restart এ AOF ব্যবহার হয় (বেশি complete), RDB ব্যবহার হয় quick backup এর জন্য।</div>
 </div>`
         },
         {
           id: 16, phase: 5,
           name: "Backup ও Restore",
-          points: ["Manual backup", "Automated backup script", "Restore করা", "Cloud backup"],
-          cmd: "redis-cli BGSAVE\ncp /var/lib/redis/dump.rdb /backup/\nredis-cli --rdb backup.rdb",
+          points: ["Manual backup (BGSAVE + copy)", "Automated backup script", "Cloud backup (S3)", "Disaster recovery steps"],
+          cmd: "redis-cli BGSAVE\ncp /var/lib/redis/dump.rdb /backup/dump-$(date +%Y%m%d).rdb",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">💾 Manual Backup</div>
   <div class="r-code"><span class="r-comment"># Step 1: Background save trigger করো</span>
 redis-cli BGSAVE
+<span class="r-output">Background saving started</span>
 
-<span class="r-comment"># Step 2: Save শেষ হওয়া পর্যন্ত wait করো</span>
-redis-cli LASTSAVE  <span class="r-comment">← timestamp পরিবর্তন হলে done</span>
+<span class="r-comment"># Step 2: Save শেষ হওয়া পর্যন্ত check করো</span>
+<span class="r-comment"># LASTSAVE এর timestamp বদলালে মানে save হয়েছে</span>
+redis-cli LASTSAVE
 
-<span class="r-comment"># Step 3: File copy করো</span>
-cp /var/lib/redis/dump.rdb /backup/dump-$(date +%Y%m%d-%H%M).rdb</div>
+<span class="r-comment"># Step 3: File copy করো (timestamp সহ নাম)</span>
+cp /var/lib/redis/dump.rdb /backup/dump-$(date +%Y%m%d-%H%M).rdb
+
+<span class="r-comment"># Step 4: Verify করো</span>
+ls -lh /backup/</div>
 </div>
 <div class="r-section">
   <div class="r-h2">🤖 Auto Backup Script</div>
-  <div class="r-code"><span class="r-comment">#!/bin/bash — backup.sh</span>
-redis-cli BGSAVE
-sleep 5  <span class="r-comment"># save শেষ হতে দাও</span>
-BACKUP_FILE="/backup/redis-$(date +%Y%m%d-%H%M%S).rdb"
-cp /var/lib/redis/dump.rdb "$BACKUP_FILE"
-echo "Backup saved: $BACKUP_FILE"
+  <div class="r-code"><span class="r-comment">#!/bin/bash — redis-backup.sh</span>
+#!/bin/bash
+REDIS_CLI="redis-cli -a $REDIS_PASSWORD"
+BACKUP_DIR="/backup/redis"
+DATE=$(date +%Y%m%d-%H%M%S)
 
-<span class="r-comment"># Cron job দিয়ে প্রতি রাতে backup</span>
-<span class="r-comment"># crontab -e এ যোগ করো:</span>
-<span class="r-comment"># 0 2 * * * /path/to/backup.sh</span></div>
-  <div class="r-tip">✅ Best Practice: Backup file আলাদা server/S3 এ রাখো। Local backup কাজে আসবে না যদি server ই crash করে!</div>
+mkdir -p $BACKUP_DIR
+
+<span class="r-comment"># Background save trigger করো</span>
+$REDIS_CLI BGSAVE
+
+<span class="r-comment"># Save শেষ হওয়া পর্যন্ত wait করো</span>
+sleep 5
+
+<span class="r-comment"># Copy করো</span>
+cp /var/lib/redis/dump.rdb "$BACKUP_DIR/dump-$DATE.rdb"
+echo "✅ Backup saved: dump-$DATE.rdb"
+
+<span class="r-comment"># ৭ দিনের পুরানো backup মুছো</span>
+find $BACKUP_DIR -name "dump-*.rdb" -mtime +7 -delete
+
+<span class="r-comment"># Cron job — প্রতি রাতে ২টায় backup</span>
+<span class="r-comment"># crontab -e তে যোগ করো:</span>
+<span class="r-comment"># 0 2 * * * /path/to/redis-backup.sh</span></div>
+  <div class="r-tip">✅ Best Practice: Backup file আলাদা server বা S3/GCS তে রাখো। Local machine এ শুধু রাখলে server crash এ সব হারাবে!</div>
 </div>`
         },
-        // PHASE 7
+        // ===== PHASE 7 =====
         {
           id: 17, phase: 6,
           name: "Redis Security",
-          points: ["requirepass", "bind address", "ACL (Access Control List)", "TLS/SSL"],
-          cmd: "CONFIG SET requirepass \"strongpassword\"\nACL SETUSER alice on >pass ~* &* +@all\nredis-cli -a password",
+          points: ["requirepass — password authentication", "bind address — network restriction", "ACL — User ও Permission (Redis 6+)", "Dangerous commands disable করা"],
+          cmd: "CONFIG SET requirepass \"StrongP@ss!\"\nACL SETUSER readonly on >pass ~* &* +@read\nACL LIST",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">🔐 Basic Security</div>
-  <div class="r-code"><span class="r-comment"># Password set করো (redis.conf)</span>
+  <div class="r-code"><span class="r-comment"># redis.conf এ password set করো</span>
 requirepass MyStr0ngP@ssword!
 
-<span class="r-comment"># শুধু localhost থেকে connect হবে</span>
-bind 127.0.0.1
+<span class="r-comment"># শুধু localhost থেকে access দাও</span>
+bind 127.0.0.1 ::1
 
-<span class="r-comment"># Dynamic password change</span>
-CONFIG SET requirepass "newpassword"
+<span class="r-comment"># Runtime এ password change করো</span>
+CONFIG SET requirepass "newStrongPass!"
 
 <span class="r-comment"># Auth করো</span>
 AUTH MyStr0ngP@ssword!
-<span class="r-output">OK</span></div>
+<span class="r-output">OK ✅</span>
+
+<span class="r-comment"># Dangerous commands rename বা disable করো</span>
+<span class="r-comment"># redis.conf তে:</span>
+rename-command FLUSHALL ""        <span class="r-comment">← disable</span>
+rename-command CONFIG "HIDDEN_CFG_CMD"  <span class="r-comment">← rename</span></div>
 </div>
 <div class="r-section">
-  <div class="r-h2">👥 ACL — User Permissions</div>
-  <p class="r-p">Redis 6 থেকে ACL এসেছে — আলাদা user, আলাদা permission!</p>
-  <div class="r-code"><span class="r-comment"># Read-only user তৈরি করো</span>
-ACL SETUSER readonly on >readpass ~* &* +@read
+  <div class="r-h2">👥 ACL — User Access Control (Redis 6+)</div>
+  <p class="r-p">আলাদা user, আলাদা permission — production এ অবশ্যই ব্যবহার করো!</p>
+  <div class="r-code"><span class="r-comment"># Default user এর password দাও</span>
+ACL SETUSER default on >defaultpassword
 
-<span class="r-comment"># শুধু নির্দিষ্ট key access করতে পারবে</span>
-ACL SETUSER webapp on >webpass ~app:* +@all
+<span class="r-comment"># Read-only user তৈরি করো</span>
+ACL SETUSER readonly on >readpass ~* &* +@read -@write
+
+<span class="r-comment"># শুধু নির্দিষ্ট key pattern access করতে পারবে</span>
+ACL SETUSER webapp on >webpass ~app:* &* +@all
+
+<span class="r-comment"># Admin user</span>
+ACL SETUSER admin on >adminpass ~* &* +@all
 
 <span class="r-comment"># সব users দেখো</span>
 ACL LIST
 
+<span class="r-comment"># Current user কে আমি?</span>
+ACL WHOAMI
+
 <span class="r-comment"># User মুছো</span>
 ACL DELUSER readonly</div>
-  <div class="r-warn">⚠️ কখনো Redis কে public internet এ expose করো না! Firewall দিয়ে port 6379 block করো, শুধু application server থেকে access দাও।</div>
+  <div class="r-warn">⚠️ কখনো Redis কে public internet এ expose করো না! Firewall দিয়ে port 6379 block করো। শুধু application server থেকে internal network এ access দাও।</div>
 </div>`
         },
         {
           id: 18, phase: 6,
           name: "Memory Management",
-          points: ["maxmemory config", "Eviction policies", "Memory analysis", "Memory optimization"],
-          cmd: "CONFIG SET maxmemory 256mb\nCONFIG SET maxmemory-policy allkeys-lru\nMEMORY USAGE mykey",
+          points: ["maxmemory config — RAM limit", "Eviction policies বোঝা", "MEMORY USAGE, INFO memory", "Memory optimization tips"],
+          cmd: "CONFIG SET maxmemory 512mb\nCONFIG SET maxmemory-policy allkeys-lru\nMEMORY USAGE mykey\nINFO memory",
           tutorial: `
 <div class="r-section">
-  <div class="r-h2">🧠 Memory Limits</div>
-  <p class="r-p">Redis RAM এ data রাখে — সীমা দিয়ে না রাখলে সব RAM খেয়ে ফেলবে!</p>
+  <div class="r-h2">🧠 Memory Limits — অবশ্যই দাও!</div>
+  <p class="r-p">Redis RAM এ data রাখে — limit না দিলে সব RAM খেয়ে server crash করতে পারে!</p>
   <div class="r-code"><span class="r-comment"># সর্বোচ্চ memory limit দাও</span>
 CONFIG SET maxmemory 512mb
 
-<span class="r-comment"># Memory full হলে কী করবে (eviction policy)</span>
-CONFIG SET maxmemory-policy allkeys-lru  <span class="r-comment">← সবচেয়ে কম ব্যবহৃত মুছো</span></div>
+<span class="r-comment"># Memory full হলে কী করবে</span>
+CONFIG SET maxmemory-policy allkeys-lru</div>
 </div>
 <div class="r-section">
   <div class="r-h2">📊 Eviction Policies বোঝো</div>
-  <div class="r-code">noeviction      → নতুন data নেবে না (error দেবে) ❌
-allkeys-lru     → সব key এর মধ্যে LRU মুছো ✅ (cache এর জন্য best)
-volatile-lru    → শুধু TTL আছে এমন key মুছো
-allkeys-lfu     → সবচেয়ে কম ব্যবহৃত মুছো (Redis 4+)
+  <div class="r-code">noeviction      → নতুন data নেবে না (error দেবে) — session store এর জন্য
+allkeys-lru     → সব key এ LRU apply করো ✅ (pure cache এর জন্য best)
+volatile-lru    → শুধু TTL আছে এমন key এ LRU — mixed use এর জন্য
+allkeys-lfu     → সবচেয়ে কম frequency তে ব্যবহৃত key মুছো (Redis 4+)
+volatile-lfu    → TTL আছে এমন key এ LFU
 volatile-ttl    → সবচেয়ে কম TTL আছে এটা মুছো
-allkeys-random  → Random key মুছো</div>
-  <div class="r-code"><span class="r-comment"># Key কতটুকু memory নিচ্ছে</span>
+allkeys-random  → Random key মুছো
+volatile-random → TTL আছে এমন random key মুছো</div>
+</div>
+<div class="r-section">
+  <div class="r-h2">🔍 Memory Analysis</div>
+  <div class="r-code"><span class="r-comment"># একটা key কতটুকু memory নিচ্ছে</span>
 MEMORY USAGE user:42
 <span class="r-output">(integer) 112</span>  <span class="r-comment">← bytes</span>
 
+MEMORY USAGE big:hash SAMPLES 0  <span class="r-comment">← সব fields scan করো</span>
+
 <span class="r-comment"># সামগ্রিক memory info</span>
-INFO memory</div>
-  <div class="r-tip">✅ Best Practice: Pure cache এর জন্য <code>allkeys-lru</code>। Mixed use (cache + persistent data) এর জন্য <code>volatile-lru</code> এবং সব cache key তে TTL দাও।</div>
+INFO memory
+<span class="r-comment"># গুরুত্বপূর্ণ fields:</span>
+<span class="r-comment"># used_memory_human: 10.50M</span>
+<span class="r-comment"># mem_fragmentation_ratio: 1.2 (1.0-1.5 ভালো)</span>
+<span class="r-comment"># maxmemory_human: 512.00M</span>
+
+<span class="r-comment"># Memory doctor — Redis নিজেই পরামর্শ দেবে</span>
+MEMORY DOCTOR</div>
+  <div class="r-tip">✅ Best Practice: Pure cache এর জন্য <code>allkeys-lru</code>, mixed use এর জন্য <code>volatile-lru</code> এবং সব cache key তে TTL দাও।</div>
 </div>`
         },
         {
           id: 19, phase: 6,
           name: "Redis Replication",
-          points: ["Master-Replica setup", "REPLICAOF command", "Read scaling", "Replica লাগ"],
+          points: ["Master-Replica architecture", "REPLICAOF command (SLAVEOF deprecated)", "Read scaling strategy", "Replication lag monitoring"],
           cmd: "REPLICAOF master-ip 6379\nINFO replication\nREPLICAOF NO ONE",
           tutorial: `
 <div class="r-section">
-  <div class="r-h2">📡 Replication — Backup ও Read Scaling</div>
-  <p class="r-p">Replication মানে একটা Redis server (Master) এর সব data অন্য server এ (Replica) copy করা। দুটো কারণে দরকার: ১) High availability, ২) Read scaling।</p>
+  <div class="r-h2">📡 Replication — HA ও Read Scaling</div>
+  <p class="r-p">Replication মানে একটা Redis server (Master) এর সব data অন্য server এ (Replica) copy করা। দুটো কারণে দরকার: ১) High availability (Master down হলে Replica ব্যবহার করো), ২) Read scaling (Read traffic ভাগ করো)।</p>
+  <div class="r-fix">🔧 v2 Fix: <code>SLAVEOF</code> deprecated। এখন <code>REPLICAOF</code> ব্যবহার করো।</div>
   <div class="r-code"><span class="r-comment"># Replica server এ এই command চালাও</span>
 REPLICAOF 192.168.1.100 6379
+<span class="r-output">OK</span>
+
+<span class="r-comment"># ✅ redis.conf এ permanent config:</span>
+replicaof 192.168.1.100 6379
 
 <span class="r-comment"># Replication status দেখো</span>
 INFO replication
 <span class="r-output">role:master
-connected_slaves:1
-slave0:ip=192.168.1.101,port=6379,state=online</span>
+connected_slaves:2
+slave0:ip=192.168.1.101,port=6379,state=online,lag=0
+slave1:ip=192.168.1.102,port=6379,state=online,lag=0</span>
 
-<span class="r-comment"># Replica কে independent করো</span>
-REPLICAOF NO ONE</div>
-  <div class="r-note">💡 Master → write করা যায়। Replica → শুধু read। Application read traffic Replica এ পাঠাও, write traffic Master এ।</div>
-  <div class="r-tip">✅ Best Practice: Read-heavy application এ Replica যোগ করো। Master crash হলে Replica কে promote করো — এটাই failover।</div>
+<span class="r-comment"># Replica কে independent (master) করো</span>
+REPLICAOF NO ONE
+
+<span class="r-comment"># Master এর password থাকলে Replica config তে:</span>
+masterauth yourMasterPassword</div>
+  <div class="r-note">💡 Master → write করো। Replica → শুধু read। Application read traffic Replica তে পাঠাও, write traffic Master এ। এভাবে load distribute করো।</div>
+  <div class="r-tip">✅ Best Practice: Read-heavy application এ কমপক্ষে একটা Replica রাখো। Master crash হলে Replica কে promote করো — এটাই manual failover।</div>
 </div>`
         },
-        // PHASE 8
+        // ===== PHASE 8 =====
         {
           id: 20, phase: 7,
           name: "Redis Sentinel",
-          points: ["Sentinel কী", "Auto failover", "Configuration", "Client integration"],
-          cmd: "redis-sentinel /etc/redis/sentinel.conf\nsentinel masters",
+          points: ["Sentinel কী — automatic failover", "Sentinel config করা", "Quorum বোঝা", "Client থেকে Sentinel connect"],
+          cmd: "redis-sentinel /etc/redis/sentinel.conf\nredis-cli -p 26379 SENTINEL masters\nSENTINEL failover mymaster",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">🛡️ Redis Sentinel — Automatic Failover</div>
-  <p class="r-p">Sentinel হলো Redis এর <b>watchdog</b> — Master down হলে automatically Replica কে Master বানিয়ে দেয়। Manual হস্তক্ষেপ ছাড়াই!</p>
+  <p class="r-p">Sentinel হলো Redis এর <b>watchdog</b> — Master down হলে automatically একটা Replica কে Master বানিয়ে দেয়। Manual হস্তক্ষেপ ছাড়াই!</p>
   <div class="r-code"><span class="r-comment"># sentinel.conf</span>
 port 26379
+daemonize yes
+
 sentinel monitor mymaster 127.0.0.1 6379 2
-<span class="r-comment"># ↑ নাম, master IP, port, quorum (কতজন sentinel agree করলে failover হবে)</span>
+<span class="r-comment"># ↑ নাম="mymaster", master IP, port, quorum=2</span>
+<span class="r-comment"># quorum মানে কতজন Sentinel "down" বললে failover হবে</span>
+
+sentinel auth-pass mymaster yourMasterPassword
 
 sentinel down-after-milliseconds mymaster 5000
 <span class="r-comment"># ↑ ৫ সেকেন্ড respond না করলে down ধরা হবে</span>
 
 sentinel failover-timeout mymaster 10000
+sentinel parallel-syncs mymaster 1
 
 <span class="r-comment"># Sentinel চালু করো</span>
 redis-sentinel /etc/redis/sentinel.conf
+<span class="r-comment"># অথবা: redis-server /etc/redis/sentinel.conf --sentinel</span>
 
 <span class="r-comment"># Status দেখো</span>
-redis-cli -p 26379 SENTINEL masters</div>
-  <div class="r-tip">✅ Best Practice: Minimum ৩টা Sentinel চালাও (odd number) — quorum নিশ্চিত করতে। ২টা Sentinel থাকলে split-brain হতে পারে।</div>
+redis-cli -p 26379 SENTINEL masters
+redis-cli -p 26379 SENTINEL replicas mymaster</div>
+</div>
+<div class="r-section">
+  <div class="r-h2">🔌 Application থেকে Sentinel ব্যবহার</div>
+  <div class="r-code"><span class="r-comment"># Node.js (ioredis) — Sentinel aware connection</span>
+const redis = new Redis({
+  sentinels: [
+    { host: '192.168.1.10', port: 26379 },
+    { host: '192.168.1.11', port: 26379 },
+    { host: '192.168.1.12', port: 26379 },
+  ],
+  name: 'mymaster',
+  password: 'yourPassword',
+});</div>
+  <div class="r-tip">✅ Best Practice: Minimum ৩টা Sentinel চালাও (odd number) — quorum নিশ্চিত করতে। ২টা Sentinel থাকলে একটা down হলে quorum হবে না।</div>
 </div>`
         },
         {
           id: 21, phase: 7,
           name: "Redis Cluster",
-          points: ["Cluster কী ও কেন", "Hash slots", "Cluster setup", "Data sharding"],
-          cmd: "redis-cli --cluster create node1:6379 node2:6379 node3:6379 --cluster-replicas 1",
+          points: ["Cluster কী ও কেন — horizontal scaling", "Hash slots (16384টা)", "Cluster setup ও node add/remove", "Hash tags দিয়ে multi-key operations"],
+          cmd: "redis-cli --cluster create node1:6379 node2:6379 node3:6379 --cluster-replicas 1\nCLUSTER INFO\nCLUSTER NODES",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">🌐 Redis Cluster — Horizontal Scaling</div>
-  <p class="r-p">একটা Redis server এ RAM এর সীমা আছে। Cluster মানে data অনেকগুলো server এ ভাগ করে রাখা — যতটুকু দরকার node যোগ করো!</p>
-  <div class="r-code"><span class="r-comment"># Cluster কীভাবে কাজ করে:</span>
-16384 টা hash slot আছে।
-Key → hash function → slot নম্বর → সেই node এ store হয়।
+  <p class="r-p">একটা Redis server এ RAM এর সীমা আছে। Cluster মানে data অনেকগুলো node এ ভাগ করে রাখা (sharding) — যতটুকু দরকার node যোগ করো!</p>
+  <div class="r-code"><span class="r-comment"># Hash slot কীভাবে কাজ করে:</span>
+মোট 16384টা hash slot আছে।
+Key → CRC16 hash → slot নম্বর (0-16383) → সেই node এ store।
 
+3-node cluster এ:
 Node 1: slot 0-5460
 Node 2: slot 5461-10922
 Node 3: slot 10923-16383
+
+<span class="r-comment"># redis.conf তে cluster enable করো:</span>
+cluster-enabled yes
+cluster-config-file nodes.conf
+cluster-node-timeout 5000
 
 <span class="r-comment"># Cluster তৈরি করো (৩ master + ৩ replica)</span>
 redis-cli --cluster create \
@@ -1072,63 +1352,94 @@ redis-cli --cluster create \
 <span class="r-comment"># Cluster info দেখো</span>
 CLUSTER INFO
 CLUSTER NODES</div>
-  <div class="r-warn">⚠️ Cluster এ MGET, MSET সব key একই slot এ থাকতে হবে। Multi-key operations এর জন্য hash tags ব্যবহার করো: <code>{user}.name</code>, <code>{user}.age</code>।</div>
+</div>
+<div class="r-section">
+  <div class="r-h2">🏷️ Hash Tags — Multi-key Operations</div>
+  <div class="r-code"><span class="r-comment"># সমস্যা: MGET তে সব key একই slot এ থাকতে হবে</span>
+MGET user:1:name user:1:age  <span class="r-comment">← ❌ different slots এ থাকতে পারে!</span>
+
+<span class="r-comment"># সমাধান: Hash tags ব্যবহার করো</span>
+<span class="r-comment"># {} এর ভেতরে যা আছে শুধু সেটাই hash হবে</span>
+MSET {user:1}.name "Alice" {user:1}.age "25"
+MGET {user:1}.name {user:1}.age  <span class="r-comment">← ✅ একই slot এ!</span>
+
+<span class="r-comment"># Node add করো</span>
+redis-cli --cluster add-node new-node:6379 existing-node:6379
+
+<span class="r-comment"># Cluster check করো</span>
+redis-cli --cluster check existing-node:6379</div>
+  <div class="r-warn">⚠️ Cluster এ MULTI/EXEC (Transaction) শুধু একই slot এর keys এর জন্য কাজ করে। Cross-slot transactions সম্ভব না।</div>
 </div>`
         },
         {
           id: 22, phase: 7,
           name: "Redis Streams",
-          points: ["Stream কী", "XADD, XREAD", "Consumer Groups", "Event sourcing pattern"],
-          cmd: "XADD events * action \"purchase\" user \"alice\"\nXREAD COUNT 10 STREAMS events 0",
+          points: ["XADD — message append", "XREAD, XRANGE — message পড়া", "XGROUP — Consumer Groups", "XACK — message acknowledge"],
+          cmd: "XADD orders * product \"laptop\" qty 1 user \"alice\"\nXREAD COUNT 10 STREAMS orders 0-0\nXGROUP CREATE orders workers $ MKSTREAM",
           tutorial: `
 <div class="r-section">
-  <div class="r-h2">🌊 Redis Streams — Powerful Message Log</div>
-  <p class="r-p">Stream হলো append-only log — Kafka এর মতো কিন্তু Redis এ! Event sourcing, activity log, real-time analytics এর জন্য perfect।</p>
+  <div class="r-h2">🌊 Redis Streams — Persistent Message Log</div>
+  <p class="r-p">Stream হলো append-only log — Kafka এর মতো কিন্তু Redis এ! Event sourcing, activity log, real-time analytics এর জন্য perfect। Pub/Sub এর মতো message হারায় না।</p>
   <div class="r-code"><span class="r-comment"># Event যোগ করো (* = auto-generate ID)</span>
 XADD orders * product "laptop" qty 1 user "alice"
-<span class="r-output">"1705123456789-0"</span>  <span class="r-comment">← timestamp-sequence ID</span>
+<span class="r-output">"1705123456789-0"</span>  <span class="r-comment">← millisecond-timestamp-sequence</span>
 
-<span class="r-comment"># Events পড়ো</span>
-XREAD COUNT 10 STREAMS orders 0
-<span class="r-comment"># ↑ 0 = শুরু থেকে পড়ো</span>
+XADD orders * product "phone" qty 2 user "bob"
+<span class="r-output">"1705123457000-0"</span>
 
-<span class="r-comment"># নতুন events এর জন্য block করে অপেক্ষা করো</span>
-XREAD COUNT 10 BLOCK 0 STREAMS orders $
-<span class="r-comment"># ↑ $ = এখন থেকে নতুন যা আসবে</span>
+<span class="r-comment"># Stream length দেখো</span>
+XLEN orders
+<span class="r-output">(integer) 2</span>
 
-<span class="r-comment"># Stream length</span>
-XLEN orders</div>
+<span class="r-comment"># সব messages পড়ো (0-0 = শুরু থেকে)</span>
+XREAD COUNT 10 STREAMS orders 0-0
+
+<span class="r-comment"># নির্দিষ্ট range এ পড়ো</span>
+XRANGE orders - +  <span class="r-comment">← সব (- = min, + = max)</span>
+XRANGE orders 1705123456789-0 +  <span class="r-comment">← নির্দিষ্ট ID থেকে</span>
+
+<span class="r-comment"># নতুন messages এর জন্য block করো ($ = এখন থেকে)</span>
+XREAD COUNT 5 BLOCK 0 STREAMS orders $</div>
 </div>
 <div class="r-section">
-  <div class="r-h2">👥 Consumer Groups</div>
+  <div class="r-h2">👥 Consumer Groups — Multiple Workers</div>
   <div class="r-code"><span class="r-comment"># Consumer group তৈরি করো</span>
 XGROUP CREATE orders email-workers $ MKSTREAM
+<span class="r-comment"># $ = শুধু নতুন messages। 0 দিলে সব পুরানোও পাবে।</span>
 
-<span class="r-comment"># Worker হিসেবে message নাও</span>
+<span class="r-comment"># Worker হিসেবে message নাও (> = নতুন pending messages)</span>
 XREADGROUP GROUP email-workers worker1 COUNT 1 STREAMS orders >
+<span class="r-output">1) 1) "orders"
+   2) 1) 1) "1705123456789-0"
+         2) 1) "product"
+            2) "laptop"</span>
 
-<span class="r-comment"># Process করার পর acknowledge করো</span>
-XACK orders email-workers 1705123456789-0</div>
-  <div class="r-tip">✅ Best Practice: Simple queue এর জন্য List, Complex event streaming এর জন্য Streams ব্যবহার করো।</div>
+<span class="r-comment"># Process করার পর acknowledge করো (না করলে pending থাকবে)</span>
+XACK orders email-workers 1705123456789-0
+
+<span class="r-comment"># Pending messages দেখো (acknowledge হয়নি এমন)</span>
+XPENDING orders email-workers - + 10</div>
+  <div class="r-tip">✅ Best Practice: Simple FIFO queue এর জন্য List, Reliable multi-consumer message processing এর জন্য Streams ব্যবহার করো।</div>
 </div>`
         },
         {
           id: 23, phase: 7,
           name: "Lua Scripting",
-          points: ["EVAL command", "Atomic scripts", "Script caching (SCRIPT LOAD)", "Use cases"],
-          cmd: "EVAL \"return redis.call('SET', KEYS[1], ARGV[1])\" 1 mykey myval",
+          points: ["EVAL command ও syntax", "Atomic execution guarantee", "SCRIPT LOAD ও EVALSHA (caching)", "Real-world: atomic rate limiter"],
+          cmd: "EVAL \"return redis.call('SET', KEYS[1], ARGV[1])\" 1 mykey myval\nSCRIPT LOAD \"return 1\"\nEVALSHA sha1 0",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">📜 Lua Script — Atomic Complex Operations</div>
-  <p class="r-p">Lua script দিয়ে Redis এ complex logic চালানো যায় — পুরো script atomic হয়! Transaction এর চেয়ে বেশি শক্তিশালী।</p>
+  <p class="r-p">Lua script দিয়ে Redis এ complex logic চালানো যায় — পুরো script atomic হয় এবং অন্য কোনো client মাঝে ঢুকতে পারে না।</p>
   <div class="r-code"><span class="r-comment"># Simple script</span>
 EVAL "return 'Hello from Lua!'" 0
 <span class="r-output">"Hello from Lua!"</span>
 
-<span class="r-comment"># Key ও Argument পাস করো</span>
+<span class="r-comment"># KEYS[1] = first key argument, ARGV[1] = first value argument</span>
 EVAL "redis.call('SET', KEYS[1], ARGV[1]); return redis.call('GET', KEYS[1])" 1 mykey "hello"
+<span class="r-output">"hello"</span>
 
-<span class="r-comment"># Conditional logic</span>
+<span class="r-comment"># Conditional logic — Compare and Swap</span>
 EVAL "
   local val = redis.call('GET', KEYS[1])
   if val == ARGV[1] then
@@ -1139,40 +1450,63 @@ EVAL "
 " 1 counter "100" "200"</div>
 </div>
 <div class="r-section">
+  <div class="r-h2">⚡ Script Caching (EVALSHA)</div>
+  <div class="r-code"><span class="r-comment"># Script load করো — SHA1 hash পাবে</span>
+SCRIPT LOAD "return redis.call('GET', KEYS[1])"
+<span class="r-output">"e0e1f9fabfa9d353e69d5891e5b3cf"</span>
+
+<span class="r-comment"># SHA1 দিয়ে চালাও (script আবার পাঠাতে হবে না)</span>
+EVALSHA e0e1f9fabfa9d353e69d5891e5b3cf 1 mykey
+
+<span class="r-comment"># Script exists চেক করো</span>
+SCRIPT EXISTS e0e1f9fabfa9d353e69d5891e5b3cf</div>
+</div>
+<div class="r-section">
   <div class="r-h2">💡 Real Use Case: Atomic Rate Limiter</div>
-  <div class="r-code"><span class="r-comment"># Rate limiting script (atomic!)</span>
+  <div class="r-code"><span class="r-comment"># Rate limiting Lua script (race condition নেই!)</span>
 local key = KEYS[1]
 local limit = tonumber(ARGV[1])
+local window = tonumber(ARGV[2])
+
 local current = redis.call('INCR', key)
 if current == 1 then
-  redis.call('EXPIRE', key, 60)
+  redis.call('EXPIRE', key, window)
 end
 if current > limit then
-  return 0  -- rate limited
+  return 0  -- rate limited!
 end
-return 1  -- allowed</div>
-  <div class="r-tip">✅ Best Practice: Complex atomic operation দরকার হলে Lua script ব্যবহার করো। Script cache করো SCRIPT LOAD দিয়ে — বারবার পাঠাতে হবে না।</div>
+return limit - current  -- remaining requests</div>
+  <div class="r-tip">✅ Best Practice: Complex atomic operations এর জন্য Lua script ব্যবহার করো। Production এ SCRIPT LOAD + EVALSHA ব্যবহার করো — bandwidth বাঁচবে।</div>
 </div>`
         },
         {
           id: 24, phase: 7,
           name: "Application থেকে Redis ব্যবহার",
-          points: ["Node.js (ioredis)", "Python (redis-py)", "Connection pooling", "Best practices"],
-          cmd: "npm install ioredis\npip install redis",
+          points: ["Node.js — ioredis (recommended)", "Python — redis-py", "Connection pool setup", "Error handling ও reconnect"],
+          cmd: "npm install ioredis\npip install redis\n# Connection pooling best practices",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">🟢 Node.js — ioredis</div>
   <div class="r-code"><span class="r-comment"># Install</span>
 npm install ioredis
 
-<span class="r-comment"># Connection</span>
+<span class="r-comment"># Connection with error handling</span>
 const Redis = require('ioredis');
+
 const redis = new Redis({
   host: 'localhost',
   port: 6379,
   password: 'mypassword',
-  db: 0
+  db: 0,
+  retryStrategy(times) {
+    const delay = Math.min(times * 50, 2000);
+    return delay;  <span class="r-comment">← auto-reconnect</span>
+  },
+  maxRetriesPerRequest: 3,
 });
+
+redis.on('error', (err) => console.error('Redis error:', err));
+redis.on('connect', () => console.log('Redis connected ✅'));
 
 <span class="r-comment"># Basic usage</span>
 await redis.set('key', 'value', 'EX', 3600);
@@ -1182,97 +1516,132 @@ const val = await redis.get('key');
 await redis.hset('user:1', 'name', 'Alice', 'age', '25');
 const user = await redis.hgetall('user:1');
 
-<span class="r-comment"># Connection pool (auto in ioredis)</span>
-const cluster = new Redis.Cluster([{ host: 'node1', port: 6379 }]);</div>
+<span class="r-comment"># Pipeline — অনেক commands একসাথে পাঠাও (দ্রুত!)</span>
+const pipeline = redis.pipeline();
+pipeline.set('key1', 'val1');
+pipeline.set('key2', 'val2');
+pipeline.get('key1');
+const results = await pipeline.exec();</div>
 </div>
 <div class="r-section">
   <div class="r-h2">🐍 Python — redis-py</div>
   <div class="r-code"><span class="r-comment"># Install</span>
 pip install redis
 
-<span class="r-comment"># Connection</span>
+<span class="r-comment"># Connection Pool (production এ অবশ্যই ব্যবহার করো)</span>
 import redis
-r = redis.Redis(host='localhost', port=6379, password='mypassword', decode_responses=True)
+
+pool = redis.ConnectionPool(
+    host='localhost',
+    port=6379,
+    password='mypassword',
+    db=0,
+    max_connections=20,
+    decode_responses=True  <span class="r-comment">← bytes না, string return করবে</span>
+)
+r = redis.Redis(connection_pool=pool)
 
 <span class="r-comment"># Basic usage</span>
 r.set('key', 'value', ex=3600)
 val = r.get('key')
 
-<span class="r-comment"># Hash</span>
+<span class="r-comment"># Hash (mapping দিয়ে multiple fields)</span>
 r.hset('user:1', mapping={'name': 'Alice', 'age': '25'})
 user = r.hgetall('user:1')
 
-<span class="r-comment"># Connection pool</span>
-pool = redis.ConnectionPool(host='localhost', port=6379, max_connections=10)
-r = redis.Redis(connection_pool=pool)</div>
-  <div class="r-tip">✅ Best Practice: Production এ সবসময় connection pool ব্যবহার করো। প্রতি request এ নতুন connection করা expensive!</div>
+<span class="r-comment"># Pipeline</span>
+with r.pipeline() as pipe:
+    pipe.set('key1', 'val1')
+    pipe.set('key2', 'val2')
+    pipe.get('key1')
+    results = pipe.execute()</div>
+  <div class="r-tip">✅ Best Practice: সবসময় connection pool ব্যবহার করো। প্রতি request এ নতুন connection তৈরি করা expensive। Pool এ connections reuse হয়।</div>
 </div>`
         },
         {
           id: 25, phase: 7,
           name: "Redis Monitoring ও Performance",
-          points: ["INFO command", "redis-cli --stat", "MONITOR (debug)", "Performance tuning"],
-          cmd: "INFO all\nredis-cli --stat\nredis-cli --latency\nSLOWLOG GET 10",
+          points: ["INFO command — সব stats", "redis-cli --stat, --latency", "SLOWLOG — slow queries", "Prometheus + Grafana setup"],
+          cmd: "INFO all\nredis-cli --stat\nredis-cli --latency\nSLOWLOG GET 10\nSLOWLOG RESET",
           tutorial: `
 <div class="r-section">
   <div class="r-h2">📊 Redis Monitor করো</div>
   <div class="r-code"><span class="r-comment"># সব info এক জায়গায়</span>
 INFO all
 
-<span class="r-comment"># গুরুত্বপূর্ণ stats দেখো</span>
-INFO server      <span class="r-comment">← version, uptime</span>
-INFO memory      <span class="r-comment">← RAM usage</span>
-INFO clients     <span class="r-comment">← connected clients</span>
-INFO stats       <span class="r-comment">← ops/sec, hits, misses</span>
+<span class="r-comment"># Section অনুযায়ী দেখো</span>
+INFO server      <span class="r-comment">← version, uptime, OS</span>
+INFO memory      <span class="r-comment">← RAM usage, fragmentation</span>
+INFO clients     <span class="r-comment">← connected clients count</span>
+INFO stats       <span class="r-comment">← ops/sec, total commands, hits/misses</span>
 INFO keyspace    <span class="r-comment">← keys per database</span>
+INFO replication <span class="r-comment">← master/replica status</span>
 
 <span class="r-comment"># Real-time stats (terminal এ live দেখো)</span>
 redis-cli --stat
 
-<span class="r-comment"># Latency check করো</span>
+<span class="r-comment"># Latency check</span>
 redis-cli --latency
-
-<span class="r-comment"># Slow queries দেখো (১০ millisecond এর বেশি)</span>
-CONFIG SET slowlog-log-slower-than 10000
-SLOWLOG GET 10</div>
+redis-cli --latency-history  <span class="r-comment">← history সহ</span>
+redis-cli --latency-dist     <span class="r-comment"># distribution দেখো</span></div>
 </div>
 <div class="r-section">
-  <div class="r-h2">⚡ Cache Hit Rate বোঝো</div>
-  <div class="r-code"><span class="r-comment"># Hit rate দেখো</span>
-INFO stats | grep hits
+  <div class="r-h2">🐢 Slow Log — ধীর Commands ধরো</div>
+  <div class="r-code"><span class="r-comment"># ১০ millisecond এর বেশি সময় নেওয়া commands log করো</span>
+CONFIG SET slowlog-log-slower-than 10000  <span class="r-comment">← microseconds!</span>
+CONFIG SET slowlog-max-len 128
+
+<span class="r-comment"># Slow commands দেখো</span>
+SLOWLOG GET 10
+<span class="r-output">1) 1) (integer) 42           ← log ID
+   2) (integer) 1705000000   ← timestamp
+   3) (integer) 15000        ← microseconds (১৫ms!)
+   4) 1) "KEYS"
+      2) "*"                 ← এই command ছিল slow!</span>
+
+<span class="r-comment"># Log clear করো</span>
+SLOWLOG RESET</div>
+</div>
+<div class="r-section">
+  <div class="r-h2">📈 Cache Hit Rate — সবচেয়ে গুরুত্বপূর্ণ metric!</div>
+  <div class="r-code"><span class="r-comment"># Hit/Miss stats দেখো</span>
+INFO stats
 <span class="r-output">keyspace_hits:100000
 keyspace_misses:5000</span>
 
 <span class="r-comment"># Hit rate = hits / (hits + misses) × 100</span>
-<span class="r-comment"># এখানে: 100000 / 105000 × 100 = 95.2%</span>
-<span class="r-comment"># ✅ ৯০%+ hit rate ভালো!</span>
+<span class="r-comment"># = 100000 / 105000 × 100 = 95.2%</span>
+<span class="r-comment"># ✅ ৯০%+ ভালো! ৭০%+ acceptable।</span>
 
-<span class="r-comment"># Live commands debug (⚠️ Production এ কম চালাও!)</span>
-MONITOR  <span class="r-comment">← সব command real-time দেখাবে</span></div>
-  <div class="r-tip">✅ Best Practice: Prometheus + Grafana দিয়ে Redis monitor করো। redis_exporter ব্যবহার করো metrics collect করতে। Alert set করো memory 80% হলে।</div>
+<span class="r-comment"># Live commands দেখো (⚠️ Production এ কম ব্যবহার করো!)</span>
+MONITOR  <span class="r-comment">← সব commands real-time, server slow হতে পারে</span>
+<span class="r-comment"># Ctrl+C দিয়ে বন্ধ করো</span></div>
+  <div class="r-tip">✅ Best Practice: Prometheus + redis_exporter দিয়ে metrics collect করো, Grafana দিয়ে dashboard বানাও। Alert set করো: memory > 80%, hit rate < 90%, connected clients > limit।</div>
 </div>
 <div class="r-section">
-  <div class="r-h2">🎉 অভিনন্দন!</div>
+  <div class="r-h2">🎉 অভিনন্দন! Redis Roadmap সম্পূর্ণ!</div>
   <p class="r-p">তুমি Redis এর সম্পূর্ণ roadmap শেষ করেছো! এখন তুমি জানো:</p>
   <ul class="r-ul">
     <li>সব Data Types — String, List, Set, Hash, Sorted Set, Stream</li>
-    <li>Caching, Session, Rate Limiting, Pub/Sub</li>
-    <li>Persistence — RDB + AOF</li>
-    <li>Security, Memory Management</li>
-    <li>Replication, Sentinel, Cluster</li>
-    <li>Application থেকে Redis ব্যবহার</li>
+    <li>Caching, Session, Rate Limiting, Pub/Sub patterns</li>
+    <li>Persistence — RDB + AOF, Backup ও Restore</li>
+    <li>Security — Password, ACL, Network restriction</li>
+    <li>Replication, Sentinel (auto-failover), Cluster (sharding)</li>
+    <li>Lua scripting, Transactions, Streams</li>
+    <li>Node.js ও Python থেকে Redis ব্যবহার</li>
+    <li>Monitoring ও Performance tuning</li>
   </ul>
-  <p class="r-p">পরবর্তী ধাপ: BullMQ (Redis-based job queue) এবং real project এ Redis integrate করো! ⚡</p>
+  <p class="r-p">পরবর্তী ধাপ: <b>BullMQ</b> (Redis-based job queue) শেখো এবং real project এ Redis integrate করো! ⚡</p>
 </div>`
         },
       ];
 
       // ======================== STATE ========================
       let completed = {};
-      try { completed = JSON.parse(localStorage.getItem("redis_done1") || "{}"); } catch (e) {}
+      try { completed = JSON.parse(localStorage.getItem("redis_done_v2") || "{}"); } catch(e) {}
       let expandedId = null;
 
-      function save() { localStorage.setItem("redis_done1", JSON.stringify(completed)); }
+      function save() { localStorage.setItem("redis_done_v2", JSON.stringify(completed)); }
       function updateProgress() {
         const done = Object.values(completed).filter(Boolean).length;
         const pct = Math.round((done / 25) * 100);
@@ -1290,8 +1659,9 @@ MONITOR  <span class="r-comment">← সব command real-time দেখাবে
         });
       }
 
-      function openReader(id) {
-        event.stopPropagation();
+      function openReader(id, e) {
+        if (e) e.stopPropagation();
+        else if (window.event) window.event.stopPropagation();
         const t = TOPICS.find(x => x.id === id);
         const ph = PHASES[t.phase];
         const prevT = TOPICS.find(x => x.id === id - 1);
@@ -1308,9 +1678,9 @@ MONITOR  <span class="r-comment">← সব command real-time দেখাবে
     </div>
     <div class="reader-body">${t.tutorial}</div>
     <div class="reader-footer">
-      <button class="nav-btn" onclick="openReaderById(${id - 1})" ${!prevT ? "disabled" : ""}>← আগের টপিক</button>
+      <button class="nav-btn" onclick="openReaderById(${id-1})" ${!prevT?"disabled":""}>← আগের টপিক</button>
       <button class="nav-btn primary" onclick="closeReader()">বন্ধ করুন</button>
-      <button class="nav-btn" onclick="openReaderById(${id + 1})" ${!nextT ? "disabled" : ""}>পরের টপিক →</button>
+      <button class="nav-btn" onclick="openReaderById(${id+1})" ${!nextT?"disabled":""}>পরের টপিক →</button>
     </div>`;
 
         const overlay = document.getElementById("readerOverlay");
@@ -1358,25 +1728,22 @@ MONITOR  <span class="r-comment">← সব command real-time দেখাবে
           const ph = PHASES[t.phase];
           const isOpen = expandedId === t.id;
           const isDone = !!completed[t.id];
-
-          let pointsHTML = t.points.map(p => `<div class="ditem" style="border-color:${ph.color}33">${p}</div>`).join("");
+          const pointsHTML = t.points.map(p => `<div class="ditem" style="border-color:${ph.color}33">${p}</div>`).join("");
 
           const card = document.createElement("div");
-          card.className = `tcard ${isOpen ? "open" : ""} ${isDone ? "done" : ""}`;
+          card.className = `tcard ${isOpen?"open":""} ${isDone?"done":""}`;
+          card.style.setProperty('--dot-color', ph.color);
           card.onclick = () => toggleExpand(t.id);
+
           card.innerHTML = `
-      <style>
-        .tcard-${t.id}::before { border-color:${ph.color}; }
-        ${isDone ? `.tcard-${t.id}.done::before { background:${ph.color}; box-shadow:0 0 8px ${ph.color}; }` : ""}
-      </style>
       <div class="ttop">
         <div class="tleft">
           <span class="tnum" style="background:${ph.color}22;color:${ph.color}">#${t.id}</span>
           <span class="tname">${t.name}</span>
         </div>
         <div class="tright">
-          <button class="readbtn" style="border-color:${ph.color}55;color:${ph.color}" onclick="openReader(${t.id})">📖 পড়ুন</button>
-          <button class="chkbtn ${isDone ? "on" : ""}" style="border-color:${ph.color};${isDone ? "background:" + ph.color : ""}" onclick="toggleCheck(${t.id},event)">${isDone ? "✓" : ""}</button>
+          <button class="readbtn" style="border-color:${ph.color}55;color:${ph.color}" onclick="openReader(${t.id},event)">📖 পড়ুন</button>
+          <button class="chkbtn ${isDone?"on":""}" style="border-color:${ph.color};${isDone?"background:"+ph.color:""}" onclick="toggleCheck(${t.id},event)">${isDone?"✓":""}</button>
           <span class="arr">▾</span>
         </div>
       </div>
@@ -1384,9 +1751,9 @@ MONITOR  <span class="r-comment">← সব command real-time দেখাবে
         <div class="dlabel">📋 মূল বিষয়:</div>
         ${pointsHTML}
         <div class="clabel">💻 কমান্ড / কোড:</div>
-        <div class="cblock"><button class="cpbtn" onclick="event.stopPropagation();copyCmd(\`${t.cmd.replace(/`/g, "\\`")}\`,this)">কপি</button>${t.cmd}</div>
+        <div class="cblock"><button class="cpbtn" onclick="event.stopPropagation();copyCmd(\`${t.cmd.replace(/`/g,"\\`")}\`,this)">কপি</button>${t.cmd}</div>
       </div>`;
-          card.classList.add(`tcard-${t.id}`);
+
           timelineDiv.appendChild(card);
         });
 
